@@ -7,10 +7,9 @@ const chalk = require('chalk');
 const cors = require('cors');
 const compression = require('compression');
 const { config } = require('./config/config');
-const AppHttpError = require("../src/_helpers/appHttpError")
+const AppHttpError = require('../src/_helpers/appHttpError');
 
 // TODO: import routes middlewares
-
 
 // Start application
 const app = express();
@@ -38,14 +37,15 @@ app.get('/', (req, res) => {
   return res.send(`<h1 align="center">Bienfafood v1 API 5 juin 2021 - 11h43 / ${new Date()} </h1>`);
 });
 
-app.post("/posts", (req, res, next) => {
-   return next(new AppHttpError("test 2", 400))
-})
+app.post('/posts', (req, res, next) => {
+  return next(new AppHttpError('test 2', 400));
+});
 
 // Database connexion
 require('./_helpers/db');
 
 // TODO: routes middleware
+app.use('/api', require('./routes/user.route'));
 
 // error handler
 app.use((req, res, next) => {
@@ -54,8 +54,7 @@ app.use((req, res, next) => {
   next(error);
 });
 
-
-app.use(require("../src/_helpers/handlerError"))
+app.use(require('../src/_helpers/handlerError'));
 // Start server
 const host = `http://${config.server.host}:${config.server.port}`;
 app.listen(config.server.port, () => {
