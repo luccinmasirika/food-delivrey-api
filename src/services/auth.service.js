@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User.model');
 const jwt = require('jsonwebtoken');
 const { config } = require('../config/config');
+const AppHttpError = require('../_helpers/appHttpError');
 
 async function createAccout(params) {
   const { password } = params;
@@ -15,23 +16,25 @@ async function createAccout(params) {
 }
 
 async function isAuth(email, password) {
-  const account = await User.findOne({ email }).select('hashed_password  _id firstName disable email avatar lastName role');
-  const match = await bcrypt.compare(password, account.hashed_password);
-  if (!account || !match) {
-    return false;
-  } else {
-    const token = await generateToken(account);
-    const { _id, firstName, lastName, email, avatar, role } = account;
-    return { user: { _id, firstName, email, avatar, lastName, role }, token };
+  const account = await User.findOne({ email }).exec();
+  if (!account) {
+    throw new AppHttpError("Ce compte n'existe pas !", 403);
   }
+
+  if (!(await bcrypt.compare(password, account.hashed_password))) {
+    throw new AppHttpError('Le mot de passe est incorrecte', 403);
+  }
+
+  const token = await generateToken(account);
+  const { _id, firstName, lastName, avatar, role } = account;
+  return { user: { _id, firstName, email, avatar, lastName, role }, token };
 }
 
-async function isActif(email){
-  const account = await User.findOne({email}).exec();
-  if(account.disable){
-    return false
+async function isActif(email) {
+  const account = await User.findOne({ email, disable: true }).exec();
+  if (account) {
+    throw new AppHttpError('Désolé, votre compte a été désactivé', 403);
   }
-  return true
 }
 
 async function generateToken(params) {
@@ -49,5 +52,5 @@ module.exports = {
   createAccout,
   isAuth,
   generateToken,
-  isActif
+  isActif,
 };

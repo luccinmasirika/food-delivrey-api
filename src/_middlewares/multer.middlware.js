@@ -17,10 +17,10 @@ const multerFilter = (req, file, cb) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, 'public/images/upload');
+    callback(null, 'public/images/uploads');
   },
   filename: (req, file, callback) => { // const name = file.originalname.split(' ').join('_')
-    const name = `updev-${
+    const name = `bienfafood-${
       Date.now()
     }`;
     const extension = MIME_TYPES[file.mimetype];

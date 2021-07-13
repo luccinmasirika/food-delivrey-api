@@ -1,18 +1,21 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
 const { model, Schema } = mongoose;
 
 const userSchema = Schema(
   {
     email: { type: String, trim: true, unique: true },
+    telephone: String,
+    idPiece: String,
     firstName: { type: String, trim: true, required: true },
+    role: { type: Number, enum: [0, 1, 2, 3] },
+    hashed_password: { type: String, required: true },
     lastName: { type: String, trim: true, required: true },
-    slug: { type: String, unique: true, index: true },
-    role: { type: Number, enum: [0, 1, 2], default: 2 },
     avatar: String,
-    telephone: { type: String, trim: true, unique: true },
+    photoCarte: String,
+    sexe: { type: String, trim: true },
     disable: { type: Boolean, default: false },
-    hashed_password: { type: String, required: true, select: false },
+    adresse: { type: String, trim: true },
+    commande: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Commande' }],
   },
   { timestamps: true }
 );

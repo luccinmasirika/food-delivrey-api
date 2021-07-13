@@ -30,7 +30,7 @@ app.use(cookieParser());
 app.use(compression());
 
 // Statics files
-app.use('/images', express.static(path.join(__dirname, '../public/images/upload')));
+app.use('/images', express.static(path.join(__dirname, '../public/images/uploads')));
 
 // Home page
 app.get('/', (req, res) => {
@@ -46,6 +46,7 @@ require('./_helpers/db');
 
 // TODO: routes middleware
 app.use('/api', require('./routes/user.route'));
+app.use('/api', require('./routes/auth.route'));
 
 // error handler
 app.use((req, res, next) => {
