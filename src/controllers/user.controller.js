@@ -3,7 +3,11 @@ const {
   updateUser,
   deleteUser,
   disableAnableUser,
+  readAllUser,
+  readAllAdmin,
 } = require('../services/user.service');
+const { GetService } = require('../services/get.service');
+const AppHttpError = require('../_helpers/appHttpError');
 
 exports.read = async (req, res) => {
   try {
@@ -71,4 +75,29 @@ exports.disableAnableUser = async (req, res) => {
     await disableAnableUser(req.user._id);
     return res.json({ message: 'Opération réussi 😃' });
   } catch (error) {}
+};
+
+exports.readAllUser = async (req, res, next) => {
+  try {
+    const query = { ...req.query, ets: req.user.ets };
+    const users = await readAllUser(query);
+    if (!users.total) {
+      next(new AppHttpError('Il y a aucun utilisateur', 404));
+    }
+    res.json(users);
+  } catch (error) {
+    next(new AppHttpError('Une erreur est survenue' + error));
+  }
+};
+
+exports.readAllAdmin = async (req, res, next) => {
+  try {
+    const users = await readAllAdmin(req.query);
+    if (!users.total) {
+      next(new AppHttpError('Il y a aucun utilisateur', 404));
+    }
+    res.json(users);
+  } catch (error) {
+    next(new AppHttpError('Une erreur est survenue' + error));
+  }
 };

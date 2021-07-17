@@ -15,6 +15,7 @@ const userSchema = Schema(
     sexe: { type: String, trim: true },
     disable: { type: Boolean, default: false },
     adresse: { type: String, trim: true },
+    ets: { type: mongoose.Schema.Types.ObjectId, ref: 'Ets' },
     commande: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Commande' }],
   },
   { timestamps: true }

@@ -13,14 +13,16 @@ const menuSchema = Schema(
   { timestamps: true }
 );
 
-module.exports = model('Type', menuSchema);
+const Menu = model('Menu', menuSchema);
 
 const categorySchema = Schema(
   {
     nom: { type: String, trim: true, required: true },
-    menu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Plat' }],
+    menu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
   },
   { timestamps: true }
 );
 
-module.exports = model('Category', categorySchema);
+const Category = model('Category', categorySchema);
+
+module.exports = { Menu, Category };

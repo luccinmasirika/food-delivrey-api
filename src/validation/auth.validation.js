@@ -30,6 +30,39 @@ const signupValidator = (req, res, next) => {
   validateRequest(req, res, next, schema);
 };
 
+const signupUserValidator = (req, res, next) => {
+  const schema = Joi.object().keys({
+    firstName: Joi.string()
+      .label('Le nom est obligatoire')
+      .min(1)
+      .max(32)
+      .required(),
+    lastName: Joi.string()
+      .label('Le postnom est obligatoire')
+      .min(1)
+      .max(32)
+      .required(),
+    email: Joi.string()
+      .label('Veuillez ajouter une adresse email correcte')
+      .min(3)
+      .max(32)
+      .required()
+      .email(),
+    password: Joi.string()
+      .label('Veuillez ajouter un mot de passe (min 6 char)')
+      .min(6)
+      .max(32)
+      .required(),
+    ets: Joi.string()
+      .label("L'établissement est obligatoire")
+      .min(6)
+      .max(32)
+      .required(),
+    role: Joi.number().min(1).max(1).label('Le rôle est oblogatoire').required(),
+  });
+  validateRequest(req, res, next, schema);
+};
+
 const updateUserValidator = (req, res, next) => {
   const schema = Joi.object().keys({
     firstName: Joi.string()
@@ -176,4 +209,5 @@ module.exports = {
   signupLivreurValidator,
   updateLivreurValidator,
   updateClientValidator,
+  signupUserValidator
 };

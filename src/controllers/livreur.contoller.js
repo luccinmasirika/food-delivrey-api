@@ -1,15 +1,10 @@
+const { createAccout, isAuth, isActif } = require('../services/auth.service');
+const { readAllLivreur } = require('../services/livreur.service');
 const {
-  createAccout,
-  isAuth,
-  isActif,
-} = require('../services/livreur.service');
-const {
-  getAllLivreur,
   updateLivreur,
   deleteLivreur,
-  disableAnableLivreur
+  disableAnableLivreur,
 } = require('../services/user.service');
-
 const AppHttpError = require('../_helpers/appHttpError');
 
 exports.signup = async (req, res) => {
@@ -42,7 +37,7 @@ exports.signin = async (req, res, next) => {
 
 exports.read = async (req, res) => {
   try {
-    return res.json(req.livreur);
+    return res.json(req.user);
   } catch (error) {
     return res.status(500).json({
       error: 'Une erreur est survenue !',
@@ -50,26 +45,26 @@ exports.read = async (req, res) => {
   }
 };
 
-exports.readAll = async (req, res) => {
+// Read all livreurs
+exports.readAllLivreur = async (req, res, next) => {
   try {
-    const livreurs = await getAllLivreurs(req.livreur._id);
-    if (!livreurs) {
-      return res.status(400).json({ error: 'No user found' });
+    const livreurs = await readAllLivreur(req.query);
+    if(!livreurs.total){
+      next(new AppHttpError('Il y a aucun livreur', 400))
     }
-    return res.json(livreurs);
+    res.json(livreurs);
   } catch (error) {
-    return res.status(500).json({
-      error: 'Une erreur est survenue !',
-    });
+    next(new AppHttpError('Une erreur est survenue' + error, 500));
   }
 };
+
 
 exports.updateProfile = async (req, res) => {
   const update = req.file
     ? { ...req.body, avatar: `/images/${req.file.filename}` }
     : { ...req.body };
   try {
-    await updateLivreur(req.livreur._id, update);
+    await updateLivreur(req.user._id, update);
     return res.json({ message: 'Profil mis à jour 😃' });
   } catch (error) {
     return res.status(500).json({
