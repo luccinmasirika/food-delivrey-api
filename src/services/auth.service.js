@@ -16,22 +16,9 @@ async function createAccout(params) {
 }
 
 async function isAuth(email, password) {
-<<<<<<< HEAD
-  const account = await User.findOne({ email }).select(
-    'hashed_password  _id firstName disable email avatar lastName role'
-  );
-  const match = await bcrypt.compare(password, account.hashed_password);
-  if (!account || !match) {
-    return false;
-  } else {
-    const token = await generateToken(account);
-    const { _id, firstName, lastName, email, avatar, role } = account;
-    return { user: { _id, firstName, email, avatar, lastName, role }, token };
-=======
   const account = await User.findOne({ email }).exec();
   if (!account) {
     throw new AppHttpError("Ce compte n'existe pas !", 403);
->>>>>>> users
   }
 
   if (!(await bcrypt.compare(password, account.hashed_password))) {
@@ -44,18 +31,10 @@ async function isAuth(email, password) {
 }
 
 async function isActif(email) {
-<<<<<<< HEAD
-  const account = await User.findOne({ email }).exec();
-  if (account.disable) {
-    return false;
-  }
-  return true;
-=======
   const account = await User.findOne({ email, disable: true }).exec();
   if (account) {
     throw new AppHttpError('Désolé, votre compte a été désactivé', 403);
   }
->>>>>>> users
 }
 
 async function generateToken(params) {
