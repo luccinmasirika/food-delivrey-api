@@ -1,7 +1,7 @@
 const Commande = require('../models/Commande.model');
 const Plat = require('../models/Plat.model');
 const AppHttpError = require('../_helpers/appHttpError');
-const { readAllCommandeService } = require('../services/commande.servide');
+const { readAllCommandeService } = require('../services/commande.service');
 
 async function constrollorCreateService(req, res, next) {
   try {
