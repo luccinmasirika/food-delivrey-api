@@ -30,11 +30,16 @@ app.use(cookieParser());
 app.use(compression());
 
 // Statics files
-app.use('/images', express.static(path.join(__dirname, '../public/images/upload')));
+app.use(
+  '/images',
+  express.static(path.join(__dirname, '../public/images/uploads'))
+);
 
 // Home page
 app.get('/', (req, res) => {
-  return res.send(`<h1 align="center">Bienfafood v1 API 5 juin 2021 - 11h43 / ${new Date()} </h1>`);
+  return res.send(
+    `<h1 align="center">Bienfafood v1 API 5 juin 2021 - 11h43 / ${new Date()} </h1>`
+  );
 });
 
 app.post('/posts', (req, res, next) => {
@@ -46,6 +51,14 @@ require('./_helpers/db');
 
 // TODO: routes middleware
 app.use('/api', require('./routes/user.route'));
+app.use('/api', require('./routes/auth.route'));
+app.use('/api', require('./routes/type.route'));
+app.use('/api', require('./routes/ets.route'));
+app.use('/api', require('./routes/menu.route'));
+app.use('/api', require('./routes/plat.route'));
+app.use('/api', require('./routes/client.route'));
+app.use('/api', require('./routes/config.route'));
+app.use('/api', require('./routes/commande.route'));
 
 // error handler
 app.use((req, res, next) => {
@@ -58,5 +71,9 @@ app.use(require('../src/_helpers/handlerError'));
 // Start server
 const host = `http://${config.server.host}:${config.server.port}`;
 app.listen(config.server.port, () => {
-  console.log(`${chalk.blue.bold(`Application run on`)} ${chalk.blue.bold.underline(host)}`);
+  console.log(
+    `${chalk.yellow.bold(`Application run on`)} ${chalk.blue.bold.underline(
+      host
+    )}`
+  );
 });
