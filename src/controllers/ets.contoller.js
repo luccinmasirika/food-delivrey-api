@@ -19,7 +19,7 @@ async function constrollorCreateService(req, res, next) {
 async function readAllEts(req, res, next) {
   try {
     const ets = await readAllEtsService(req.query);
-    if (ets.total) return new AppHttpError("Pas d'établissement trouvé");
+    if (!ets.total) return next(new AppHttpError("Pas d'établissement trouvé"));
     res.json(ets);
   } catch (error) {
     next(new AppHttpError('Une erreur est survenue' + error, 500));

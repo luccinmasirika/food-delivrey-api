@@ -1,7 +1,6 @@
 const { Menu, Category } = require('../models/Menu.model');
 const AppHttpError = require('../_helpers/appHttpError');
 const { ServiceCreate } = require('../services/create.service');
-const { GetService } = require('../services/get.service');
 const { readAllMenuService } = require('../services/menu.service');
 
 async function constrollorCreateService(req, res, next) {
@@ -31,6 +30,9 @@ async function constrollorCreateCategoryService(req, res, next) {
 async function readAllMenu(req, res, next) {
   try {
     const menu = await readAllMenuService(req);
+    if(!manu.total){
+      return next(new AppHttpError('Pas de menu trouvé', 400))
+    }
     res.json(menu);
   } catch (error) {
     next(new AppHttpError('Une erreur est survenue' + error, 500));

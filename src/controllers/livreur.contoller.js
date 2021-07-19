@@ -50,7 +50,7 @@ exports.readAllLivreur = async (req, res, next) => {
   try {
     const livreurs = await readAllLivreur(req.query);
     if(!livreurs.total){
-      next(new AppHttpError('Il y a aucun livreur', 400))
+      return next(new AppHttpError('Il y a aucun livreur', 400))
     }
     res.json(livreurs);
   } catch (error) {

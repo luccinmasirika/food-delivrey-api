@@ -26,6 +26,9 @@ async function constrollorCreateService(req, res, next) {
 async function readAllPlat(req, res, next) {
   try {
     const plat = await readAllPlatService(req);
+    if(!plat.total){
+      return next(new AppHttpError('Pas de plat touvé', 400))
+    }
     res.json(plat);
   } catch (error) {
     next(new AppHttpError('Une erreur est survenue' + error, 500));

@@ -11,7 +11,7 @@ const platValidator = (req, res, next) => {
       .max(32)
       .required(),
     prix: Joi.number()
-      .label('Le prix est obligatoire')
+      .label('Le prix être supérieur à 0')
       .min(1)
       .max(32)
       .required(),

@@ -4,8 +4,18 @@ async function serviceConfigUpdate(params) {
   await Config.updateOne({}, { $set: params }, { upsert: true });
 }
 
-async function serviceDeviseUpdate(params, filter) {
-  await Config.updateOne(filter, { $set: params }, { upsert: true });
+async function serviceDeviseCreate(params) {
+  const data = new Devise(params);
+  console.log(data);
+  await data.save();
 }
 
-module.exports = { serviceConfigUpdate, serviceDeviseUpdate };
+async function serviceDeviseUpdate(params, id) {
+  await Devise.updateOne({ _id: id }, { $set: params }, { upsert: true });
+}
+
+module.exports = {
+  serviceConfigUpdate,
+  serviceDeviseUpdate,
+  serviceDeviseCreate,
+};

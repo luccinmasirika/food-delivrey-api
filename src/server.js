@@ -57,6 +57,8 @@ app.use('/api', require('./routes/ets.route'));
 app.use('/api', require('./routes/menu.route'));
 app.use('/api', require('./routes/plat.route'));
 app.use('/api', require('./routes/client.route'));
+app.use('/api', require('./routes/config.route'));
+app.use('/api', require('./routes/commande.route'));
 
 // error handler
 app.use((req, res, next) => {
@@ -70,7 +72,7 @@ app.use(require('../src/_helpers/handlerError'));
 const host = `http://${config.server.host}:${config.server.port}`;
 app.listen(config.server.port, () => {
   console.log(
-    `${chalk.blue.bold(`Application run on`)} ${chalk.blue.bold.underline(
+    `${chalk.yellow.bold(`Application run on`)} ${chalk.blue.bold.underline(
       host
     )}`
   );

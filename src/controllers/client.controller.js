@@ -6,7 +6,7 @@ exports.readAllClient = async (req, res, next) => {
   try {
     const client = await readAllClient(req.query);
     if (!client.total) {
-      next(new AppHttpError('Pas de client trouvé', 400));
+      return next(new AppHttpError('Pas de client trouvé', 400));
     }
     res.json(client);
   } catch (error) {
