@@ -2,25 +2,31 @@ const Commande = require('../models/Commande.model');
 const Plat = require('../models/Plat.model');
 const AppHttpError = require('../_helpers/appHttpError');
 const { readAllCommandeService } = require('../services/commande.service');
+const Config = require('../models/Config.model');
+const ListRouge = require('../models/ListeRouge.model');
 
 async function constrollorCreateService(req, res, next) {
+  const FRAIS_DE_LIVRAISON = 2;
+  const { produit, ville, adresse1, adresse2, long, lat, client } = req.body;
   try {
     try {
       for (let i = 0; i < req.body.produit.length; i++) {
         const data = await Plat.findOne(
           {
-            _id: req.body.produit[i],
+            _id: produit[i].id,
           },
-          { ets: 1 }
+          { ets: 1, prix: 1 }
         ).exec();
         const commande = new Commande({
-          client: req.body.client,
-          produit: req.body.produit[i],
+          client,
+          quantity: produit[i].quantity,
+          produit: produit[i].id,
           ets: data.ets,
+          prix: data.prix * produit[i].quantity + FRAIS_DE_LIVRAISON,
+          adresse: { ville, adresse1, adresse2, localisation: { long, lat } },
         });
         await commande.save();
       }
-
       res.json({ message: 'Opération réussi 😃' });
     } catch (error) {
       next(new AppHttpError('Une error est survenue' + error, 500));
@@ -32,6 +38,11 @@ async function constrollorCreateService(req, res, next) {
 
 async function validerCommande(req, res, next) {
   try {
+    if ((req.user.ets).toString() !== (req.commande.ets).toString()) {
+      return next(
+        new AppHttpError("Désolé, cette commande n'est pas la vôtre")
+      );
+    }
     await Commande.updateOne(
       { _id: req.commande._id },
       { $set: { etat: req.body.etat } }
@@ -64,7 +75,7 @@ async function livrerCommande(req, res, next) {
         return next(new AppHttpError('La commande a été annulé', 400));
 
       case 'PAYIED':
-        return next(new AppHttpError('La commande est déjà payé', 400));
+        return next(new AppHttpError('La commande est déjà payée', 400));
     }
 
     await Commande.updateOne(
@@ -89,7 +100,7 @@ async function payerCommande(req, res, next) {
       case 'DENIED':
         return next(new AppHttpError('La commande a été annulé', 400));
       case 'PAYIED':
-        return next(new AppHttpError('La commande est déjà payé', 400));
+        return next(new AppHttpError('La commande est déjà payée', 400));
       case 'PENDING_FOR_VALIDATION':
         return next(
           new AppHttpError("La commande n'est pas encore validée", 400)
@@ -106,6 +117,20 @@ async function payerCommande(req, res, next) {
       return next(
         new AppHttpError('Désolé, une commande refusée ne peut être payer')
       );
+    }
+
+    if (req.body.etat === 'DENIED') {
+      try {
+        const addToList = new ListRouge({
+          client: check.client,
+          livreur: check.livreur,
+          commande: check._id,
+        });
+        await addToList.save();
+        return res.json({ message: 'Opération réussi 😃' });
+      } catch (error) {
+        return next(new AppHttpError('Une erreur est survenue' + error));
+      }
     }
 
     await Commande.updateOne(

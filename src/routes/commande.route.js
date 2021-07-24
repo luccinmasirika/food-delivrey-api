@@ -4,7 +4,7 @@ const {
   readAllCommande,
   validerCommande,
   livrerCommande,
-  payerCommande
+  payerCommande,
 } = require('../controllers/commande.controller');
 const {
   createCommandeValidator,
@@ -27,7 +27,12 @@ router.put(
   validerCommande
 );
 router.put('/livrer/commande/:commandeId/:userId', livrerCommande);
-router.put('/payer/commande/:commandeId/:userId', livrerCommande);
+router.put(
+  '/payer/commande/:commandeId/:userId',
+  payerCommandeValidator,
+  payerCommande
+);
+router.put('/close/commande', closeCommandeValidator);
 
 router.param('userId', getUserByID);
 router.param('commandeId', getCommandeByID);

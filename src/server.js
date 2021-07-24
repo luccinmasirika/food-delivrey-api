@@ -37,9 +37,7 @@ app.use(
 
 // Home page
 app.get('/', (req, res) => {
-  return res.send(
-    `<h1 align="center">Bienfafood v1 API 5 juin 2021 - 11h43 / ${new Date()} </h1>`
-  );
+  return res.send('<h1>Bienfafood API - v1</h1>');
 });
 
 app.post('/posts', (req, res, next) => {

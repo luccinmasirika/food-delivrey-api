@@ -5,9 +5,7 @@ const { readAllMenuService } = require('../services/menu.service');
 
 async function constrollorCreateService(req, res, next) {
   try {
-    const image = req.file
-      ? `/images/${req.file.filename}`
-      : '/images/menu.png';
+    const image = req.file ? `images/${req.file.filename}` : 'images/menu.png';
     const data = { ...req.body, image };
     const response = new ServiceCreate(data, Menu);
     await response.create();
@@ -30,8 +28,8 @@ async function constrollorCreateCategoryService(req, res, next) {
 async function readAllMenu(req, res, next) {
   try {
     const menu = await readAllMenuService(req);
-    if(!manu.total){
-      return next(new AppHttpError('Pas de menu trouvé', 400))
+    if (!manu.total) {
+      return next(new AppHttpError('Pas de menu trouvé', 400));
     }
     res.json(menu);
   } catch (error) {

@@ -3,9 +3,9 @@ const AppHttpError = require('../_helpers/appHttpError');
 
 exports.signup = async (req, res) => {
   //set a default avatar image
-  const defaultAvatar = '/images/avatar.png';
+  const defaultAvatar = 'images/avatar.png';
   //get avatar image from req.file
-  const avatar = req.file ? `/images/${req.file.filename}` : defaultAvatar;
+  const avatar = req.file ? `images/${req.file.filename}` : defaultAvatar;
 
   //create new user
   const user = { ...req.body, avatar };

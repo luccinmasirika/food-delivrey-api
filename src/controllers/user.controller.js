@@ -35,7 +35,7 @@ exports.readAll = async (req, res) => {
 
 exports.update = async (req, res) => {
   const update = req.file
-    ? { ...req.body, avatar: `/images/${req.file.filename}` }
+    ? { ...req.body, avatar: `images/${req.file.filename}` }
     : { ...req.body };
   try {
     await updateUser(req.user._id, update);
@@ -49,7 +49,7 @@ exports.update = async (req, res) => {
 
 exports.updateInfo = async (req, res) => {
   const update = req.file
-    ? { ...req.body, photoCarte: `/images/${req.file.filename}` }
+    ? { ...req.body, photoCarte: `images/${req.file.filename}` }
     : { ...req.body };
   try {
     await updateUser(req.user._id, update);

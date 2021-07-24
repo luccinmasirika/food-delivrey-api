@@ -17,16 +17,27 @@ const commandeSchema = Schema(
         'PENDING_FOR_PAYMENT',
         'PAYIED',
         'CANCELED',
-        'CLOSED'
+        'CLOSED',
       ],
     },
     reference: { type: String, trim: true, unique: true },
+    adresse: {
+      ville: { type: String, trim: true },
+      adresse1: { type: String, trim: true },
+      adresse2: { type: String, trim: true },
+      localisation: {
+        long: { type: String, trim: true },
+        lat: { type: String, trim: true },
+      },
+    },
     livreur: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       default: null,
     },
     client: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    quantity: { type: Number, required: true },
+    prix: { type: Number, required: true },
   },
   { timestamps: true }
 );

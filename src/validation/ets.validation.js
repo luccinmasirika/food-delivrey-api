@@ -9,14 +9,24 @@ const etsValidator = (req, res, next) => {
       .label('La description est obligatoire')
       .min(1)
       .required(),
-    heure: Joi.array()
-      .label("L'heure d'ouverture et de fermeture sont obligatoire")
+    ouverture: Joi.string()
+      .label("L'heure d'ouverture est obligatoire")
       .min(1)
       .max(32)
       .required(),
-    coordonnees: Joi.array()
-      .label('Les coordonnées sont obligatoire')
-      .min(2)
+    fermeture: Joi.string()
+      .label("L'heure de fermeture est obligatoire")
+      .min(1)
+      .max(32)
+      .required(),
+    long: Joi.string()
+      .label('La longitude est obligatoire')
+      .min(1)
+      .max(32)
+      .required(),
+    lat: Joi.string()
+      .label('La latitude est obligatoire')
+      .min(1)
       .max(32)
       .required(),
     disable: Joi.any().label('Actif'),

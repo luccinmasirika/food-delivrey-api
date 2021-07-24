@@ -1,11 +1,17 @@
-class ServiceCreate {
-  constructor(params, document) {
-    (this.params = params), (this.document = document);
-  }
-  async create() {
-    const data = new this.document(params);
-    await data.save();
-  }
+const { GetService } = require('./get.service');
+const Type = require('../models/Type.model');
+
+async function readAllTypeService(params) {
+  const filters = {};
+  const { page, limit } = params.query;
+  const query = {
+    page: parseInt(page),
+    limit: parseInt(limit),
+  };
+
+  return await new GetService(Type.find(), query, filters).pagination();
 }
 
-module.exports = { ServiceCreate };
+module.exports = {
+  readAllTypeService,
+};

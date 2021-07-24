@@ -35,7 +35,7 @@ async function updateDevise(req, res, next) {
 
 async function updateLogo(req, res, next) {
   try {
-    const logo = `/images/${req.file.filename}`;
+    const logo = `images/${req.file.filename}`;
     await serviceConfigUpdate({ logo });
     return res.json({ message: 'Opération réussi 😃' });
   } catch (error) {
@@ -45,7 +45,7 @@ async function updateLogo(req, res, next) {
 
 async function updateIcon(req, res, next) {
   try {
-    const icon = `/images/${req.file.filename}`;
+    const icon = `images/${req.file.filename}`;
     await serviceConfigUpdate({ icon });
     return res.json({ message: 'Opération réussi 😃' });
   } catch (error) {

@@ -6,9 +6,7 @@ const { readAllPlatService } = require('../services/plat.service');
 
 async function constrollorCreateService(req, res, next) {
   try {
-    const image = req.file
-      ? `/images/${req.file.filename}`
-      : '/images/plat.png';
+    const image = req.file ? `images/${req.file.filename}` : 'images/plat.png';
     const checkEts = await Ets.findById(req.body.ets);
     const ets = {
       _id: checkEts._id,
@@ -26,8 +24,8 @@ async function constrollorCreateService(req, res, next) {
 async function readAllPlat(req, res, next) {
   try {
     const plat = await readAllPlatService(req);
-    if(!plat.total){
-      return next(new AppHttpError('Pas de plat touvé', 400))
+    if (!plat.total) {
+      return next(new AppHttpError('Pas de plat touvé', 400));
     }
     res.json(plat);
   } catch (error) {

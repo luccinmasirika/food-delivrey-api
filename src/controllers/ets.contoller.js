@@ -6,8 +6,13 @@ const { GetService } = require('../services/get.service');
 
 async function constrollorCreateService(req, res, next) {
   try {
-    const image = req.file ? `/images/${req.file.filename}` : '/images/ets.png';
-    const data = { ...req.body, image };
+    const image = req.file ? `images/${req.file.filename}` : 'images/ets.png';
+    const data = {
+      ...req.body,
+      image,
+      heure: { ouverture: req.body.long, fermeture: req.body.lat },
+      localisation: { long: req.body.long, lat: req.body.lat },
+    };
     const response = new ServiceCreate(data, Ets);
     await response.create();
     res.json({ message: 'Opération réussi 😃' });

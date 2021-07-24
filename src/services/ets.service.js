@@ -2,7 +2,7 @@ const { GetService } = require('./get.service');
 const Ets = require('../models/Ets.model');
 
 async function readAllEtsService(params) {
-  const filters = { role: 3 };
+  const filters = {};
   const { page, limit, nom, type } = params;
   const query = {
     page: parseInt(page),
@@ -17,7 +17,11 @@ async function readAllEtsService(params) {
     filters.type = type;
   }
 
-  return await new GetService(Ets.find(), query, filters).pagination();
+  return await new GetService(
+    Ets.find().populate('type'),
+    query,
+    filters
+  ).pagination();
 }
 
 module.exports = {

@@ -13,6 +13,19 @@ const createCommandeValidator = (req, res, next) => {
       .min(24)
       .max(24)
       .required(),
+    ville: Joi.string()
+      .label('Le client est obligatoire')
+      .min(1)
+      .max(32)
+      .required(),
+    adresse1: Joi.string()
+      .label("L'adresse est obligatoire")
+      .min(1)
+      .max(32)
+      .required(),
+    adresse2: Joi.string().label("Erreur avec l'adresse 2").min(1).max(32),
+    long: Joi.string().label('Le client est obligatoire').min(1).max(32),
+    lat: Joi.string().label('Le client est obligatoire').min(1).max(32),
   });
   validateRequest(req, res, next, schema);
 };

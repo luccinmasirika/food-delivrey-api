@@ -8,8 +8,8 @@ const {
 const AppHttpError = require('../_helpers/appHttpError');
 
 exports.signup = async (req, res) => {
-  const defaultAvatar = '/images/avatar.png';
-  const avatar = req.file ? `/images/${req.file.filename}` : defaultAvatar;
+  const defaultAvatar = 'images/avatar.png';
+  const avatar = req.file ? `images/${req.file.filename}` : defaultAvatar;
   const livreur = { ...req.body, avatar };
 
   try {
@@ -49,8 +49,8 @@ exports.read = async (req, res) => {
 exports.readAllLivreur = async (req, res, next) => {
   try {
     const livreurs = await readAllLivreur(req.query);
-    if(!livreurs.total){
-      return next(new AppHttpError('Il y a aucun livreur', 400))
+    if (!livreurs.total) {
+      return next(new AppHttpError('Il y a aucun livreur', 400));
     }
     res.json(livreurs);
   } catch (error) {
@@ -58,10 +58,9 @@ exports.readAllLivreur = async (req, res, next) => {
   }
 };
 
-
 exports.updateProfile = async (req, res) => {
   const update = req.file
-    ? { ...req.body, avatar: `/images/${req.file.filename}` }
+    ? { ...req.body, avatar: `images/${req.file.filename}` }
     : { ...req.body };
   try {
     await updateLivreur(req.user._id, update);
@@ -75,7 +74,7 @@ exports.updateProfile = async (req, res) => {
 
 exports.updateInfo = async (req, res) => {
   const update = req.file
-    ? { ...req.body, photo_carte: `/images/${req.file.filename}` }
+    ? { ...req.body, photo_carte: `images/${req.file.filename}` }
     : { ...req.body };
   try {
     await updateLivreur(req.user._id, update);
