@@ -16,10 +16,10 @@ async function constrollorCreateService(req, res, next) {
     };
     const data = { ...req.body, ets, image };
     const response = new ServiceCreate(data, Plat);
-    const res = await response.create();
+    const pushData = await response.create();
     await new PushData(
       Menu,
-      { plat: res._id },
+      { plat: pushData._id },
       { _id: req.body.menu }
     ).onPush();
     res.json({ message: 'Opération réussi 😃' });

@@ -11,7 +11,6 @@ const { platValidator } = require('../validation/plat.validation');
 
 router.post(
   '/create/plat/:userId',
-  platValidator,
   checkName,
   multer,
   constrollorCreateService
