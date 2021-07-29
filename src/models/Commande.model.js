@@ -3,7 +3,7 @@ const { model, Schema } = mongoose;
 
 const commandeSchema = Schema(
   {
-    produit: { type: mongoose.Schema.Types.ObjectId, ref: 'Produit' },
+    produit: { type: mongoose.Schema.Types.ObjectId, ref: 'Plat' },
     ets: { type: mongoose.Schema.Types.ObjectId, ref: 'Ets' },
     etat: {
       type: String,

@@ -12,6 +12,7 @@ const {
   constrollorCreateService,
   constrollorCreateCategoryService,
   readAllMenu,
+  readAllCat,
 } = require('../controllers/menu.contoller');
 const {
   menuValidator,
@@ -20,7 +21,6 @@ const {
 
 router.post(
   '/create/menu/:userId',
-  menuValidator,
   checkName,
   multer,
   constrollorCreateService
@@ -28,12 +28,12 @@ router.post(
 
 router.post(
   '/create/category/:userId',
-  categoryValidator,
   checkCategoryName,
   constrollorCreateCategoryService
 );
 
 router.get('/read/all/menu/:userId', readAllMenu);
+router.get('/read/all/category/:userId', readAllCat);
 
 router.param('userId', getUserByID);
 

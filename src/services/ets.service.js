@@ -1,9 +1,22 @@
 const { GetService } = require('./get.service');
 const Ets = require('../models/Ets.model');
+const Menu = require('../models/Menu.model');
+const Plat = require('../models/Plat.model');
+
+async function disableAnable(params) {
+  const ets = await Ets.findOne({ _id: params }).exec();
+  await Ets.updateOne({ _id: params }, { $set: { disable: !ets.disable } });
+  await Menu.updateMany({ ets: params }, { $set: { disable: !ets.disable } });
+  await Plat.updateMany(
+    { 'ets._id': params },
+    { $set: { disable: !ets.disable } }
+  );
+  return true;
+}
 
 async function readAllEtsService(params) {
   const filters = {};
-  const { page, limit, nom, type } = params;
+  const { page, limit, nom, type, disable } = params;
   const query = {
     page: parseInt(page),
     limit: parseInt(limit),
@@ -17,6 +30,10 @@ async function readAllEtsService(params) {
     filters.type = type;
   }
 
+  if (disable) {
+    filters.disable = disable;
+  }
+
   return await new GetService(
     Ets.find().populate('type'),
     query,
@@ -26,4 +43,5 @@ async function readAllEtsService(params) {
 
 module.exports = {
   readAllEtsService,
+  disableAnable,
 };

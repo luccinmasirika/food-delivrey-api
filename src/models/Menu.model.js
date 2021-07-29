@@ -7,6 +7,7 @@ const menuSchema = Schema(
     description: { type: String, trim: true, required: true },
     image: String,
     ets: { type: mongoose.Schema.Types.ObjectId, ref: 'Ets' },
+    disable: { type: Boolean, default: false },
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
     plat: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Plat' }],
   },
@@ -18,7 +19,8 @@ const Menu = model('Menu', menuSchema);
 const categorySchema = Schema(
   {
     nom: { type: String, trim: true, required: true },
-    menu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
+    disable: { type: Boolean, default: false },
+    menu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Menu' }],
   },
   { timestamps: true }
 );

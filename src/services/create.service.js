@@ -4,7 +4,8 @@ class ServiceCreate {
   }
   async create() {
     const data = new this.document(this.params);
-    await data.save();
+    const res = await data.save();
+    return res;
   }
 }
 

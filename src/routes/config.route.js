@@ -6,6 +6,7 @@ const {
   updateIcon,
   updateLogo,
   readAllDevise,
+  readConfig,
 } = require('../controllers/config.controller');
 const {
   configValidator,
@@ -18,9 +19,10 @@ const {
   getDeviseByID,
   checkName,
 } = require('../_middlewares/config.middleware');
+const { multer } = require('../_middlewares/multer.middleware');
 
-router.put('/update/logo/:userId', logoIcon, updateLogo);
-router.put('/update/icon/:userId', logoIcon, updateIcon);
+router.post('/update/logo/:userId', multer, updateLogo);
+router.post('/update/icon/:userId', multer, updateIcon);
 router.post('/create/devise/:userId', deviseValidator, checkName, createDevise);
 router.put(
   '/update/devise/:deviseId/:userId',
@@ -30,6 +32,7 @@ router.put(
 );
 router.put('/update/config/:userId', configValidator, updateConfig);
 router.get('/read/all/devise/:userId', readAllDevise);
+router.get('/read/config', readConfig);
 
 router.param('userId', getUserByID);
 router.param('configId', getConfigByID);

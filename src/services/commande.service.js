@@ -31,8 +31,12 @@ async function readAllCommandeService(params) {
   if (etat) {
     filters.etat = etat;
   }
-
-  return await new GetService(Commande.find(), query, filters).pagination();
+  
+  return await new GetService(
+    Commande.find().populate('client').populate('produit').populate('ets'),
+    query,
+    filters
+  ).pagination();
 }
 
 module.exports = { readAllCommandeService };

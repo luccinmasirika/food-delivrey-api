@@ -9,12 +9,12 @@ const configValidator = (req, res, next) => {
       .min(1)
       .max(32)
       .required(),
-    rayonLimite: Joi.string()
+    rayonLimite: Joi.number()
       .label('Le rayon est obligatoire')
       .min(1)
       .max(32)
       .required(),
-    fraisParKm: Joi.string()
+    fraisParKm: Joi.number()
       .label('Le prix par km est obligatoire')
       .min(1)
       .required(),

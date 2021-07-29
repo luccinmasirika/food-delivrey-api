@@ -4,6 +4,7 @@ const {
   serviceConfigUpdate,
   serviceDeviseUpdate,
   serviceDeviseCreate,
+  serviceReadConfig,
 } = require('../services/config.service');
 
 async function updateConfig(req, res, next) {
@@ -53,11 +54,18 @@ async function updateIcon(req, res, next) {
   }
 }
 
+async function readConfig(req, res, next) {
+  try {
+    const config = await serviceReadConfig();
+    res.json(config);
+  } catch (error) {
+    next(new AppHttpError('Il y a une erreur', 500));
+  }
+}
+
 async function readAllDevise(req, res, next) {
   try {
     const devise = await readAllDeviseService();
-    if (!devise.total)
-      return next(new AppHttpError("Pas d'établissement trouvé"));
     res.json(devise);
   } catch (error) {
     next(new AppHttpError('Une erreur est survenue' + error, 500));
@@ -71,4 +79,5 @@ module.exports = {
   readAllDevise,
   updateDevise,
   createDevise,
+  readConfig,
 };

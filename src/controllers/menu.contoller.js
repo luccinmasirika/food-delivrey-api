@@ -1,14 +1,28 @@
 const { Menu, Category } = require('../models/Menu.model');
+const Ets = require('../models/Ets.model');
 const AppHttpError = require('../_helpers/appHttpError');
 const { ServiceCreate } = require('../services/create.service');
-const { readAllMenuService } = require('../services/menu.service');
+const {
+  readAllMenuService,
+  readAllCatService,
+} = require('../services/menu.service');
+const { PushData } = require('../_helpers/pushData');
 
 async function constrollorCreateService(req, res, next) {
   try {
     const image = req.file ? `images/${req.file.filename}` : 'images/menu.png';
     const data = { ...req.body, image };
     const response = new ServiceCreate(data, Menu);
-    await response.create();
+    const menu = await response.create();
+
+    await new PushData(
+      Category,
+      { menu: menu._id },
+      { _id: req.body.category }
+    ).onPush();
+
+    await new PushData(Ets, { menu: menu._id }, { _id: req.body.ets }).onPush();
+
     res.json({ message: 'Opération réussi 😃' });
   } catch (error) {
     next(new AppHttpError('Une error est survenue' + error, 500));
@@ -28,7 +42,7 @@ async function constrollorCreateCategoryService(req, res, next) {
 async function readAllMenu(req, res, next) {
   try {
     const menu = await readAllMenuService(req);
-    if (!manu.total) {
+    if (!menu.total) {
       return next(new AppHttpError('Pas de menu trouvé', 400));
     }
     res.json(menu);
@@ -37,8 +51,20 @@ async function readAllMenu(req, res, next) {
   }
 }
 
+async function readAllCat(req, res, next) {
+  try {
+    const cat = await readAllCatService(req);
+    if (!cat.total) {
+      return next(new AppHttpError('Pas de catégorie trouvé', 400));
+    }
+    res.json(cat);
+  } catch (error) {
+    next(new AppHttpError('Une erreur est survenue' + error, 500));
+  }
+}
 module.exports = {
   constrollorCreateService,
   constrollorCreateCategoryService,
   readAllMenu,
+  readAllCat,
 };

@@ -12,6 +12,8 @@ async function readAllTypeService(params) {
   return await new GetService(Type.find(), query, filters).pagination();
 }
 
+
+
 module.exports = {
   readAllTypeService,
 };

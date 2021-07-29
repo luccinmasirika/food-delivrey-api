@@ -11,7 +11,6 @@ const { etsValidator } = require('../validation/ets.validation');
 
 router.post(
   '/create/ets/:userId',
-  etsValidator,
   checkName,
   multer,
   constrollorCreateService
@@ -23,7 +22,9 @@ router.post('/test', multer, (req, res) => {
   console.log(req.body);
   res.send('Ok');
 });
+router.get('read/one/ets/:etsId/:userId', (req, res) => {});
 
 router.param('userId', getUserByID);
+router.param('estId', getEtsByID);
 
 module.exports = router;
