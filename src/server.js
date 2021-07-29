@@ -37,11 +37,7 @@ app.use(
 
 // Home page
 app.get('/', (req, res) => {
-  return res.send('<h1>Bienfafood API - v1</h1>');
-});
-
-app.post('/posts', (req, res, next) => {
-  return next(new AppHttpError('test 2', 400));
+  return res.send('<h1>Bienfafood API - v1 (29-07-2021)</h1>');
 });
 
 // Database connexion
