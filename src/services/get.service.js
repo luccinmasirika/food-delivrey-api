@@ -15,7 +15,7 @@ class GetService {
       .find(this.filters)
       .skip(skip)
       .limit(limit)
-      .sort([['updatedAt', 'desc']])
+      .sort([['createdAt', 'desc']])
       .exec();
     return { data, total, page, pages };
   }

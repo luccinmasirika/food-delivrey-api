@@ -3,7 +3,11 @@ const Ets = require('../models/Ets.model');
 const { Menu } = require('../models/Menu.model');
 const AppHttpError = require('../_helpers/appHttpError');
 const { ServiceCreate } = require('../services/create.service');
-const { readAllPlatService } = require('../services/plat.service');
+const {
+  readAllPlatService,
+  promo,
+  disableAnable,
+} = require('../services/plat.service');
 const { PushData } = require('../_helpers/pushData');
 
 async function constrollorCreateService(req, res, next) {
@@ -22,9 +26,42 @@ async function constrollorCreateService(req, res, next) {
       { plat: pushData._id },
       { _id: req.body.menu }
     ).onPush();
-    res.json({ message: 'Opération réussi 😃' });
+    res.json({ message: 'Opération réussi 😃', _id: pushData._id });
   } catch (error) {
     next(new AppHttpError('Une error est survenue' + error, 500));
+  }
+}
+
+async function addOtherImages(req, res, next) {
+  try {
+    const image = req.file && `images/${req.file.filename}`;
+    const { _id } = req.query;
+
+    const test = await Plat.updateOne(
+      { _id },
+      { $push: { autresImages: image } }
+    );
+    return res.json({ message: 'Opération réussi 😃' });
+  } catch (error) {
+    next(new AppHttpError('Une erreur est survenue', 500));
+  }
+}
+
+async function promoControllor(req, res, next) {
+  try {
+    await promo(req.query._id);
+    return res.json({ message: 'Opération réussi 😃' });
+  } catch (error) {
+    next(new AppHttpError('Une erreur est survenue', 500));
+  }
+}
+
+async function disableUnableControllor(req, res, next) {
+  try {
+    await disableAnable(req.query._id);
+    return res.json({ message: 'Opération réussi 😃' });
+  } catch (error) {
+    next(new AppHttpError('Une erreur est survenue' + error, 500));
   }
 }
 
@@ -40,4 +77,10 @@ async function readAllPlat(req, res, next) {
   }
 }
 
-module.exports = { constrollorCreateService, readAllPlat };
+module.exports = {
+  constrollorCreateService,
+  readAllPlat,
+  addOtherImages,
+  promoControllor,
+  disableUnableControllor,
+};

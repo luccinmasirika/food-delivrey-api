@@ -9,17 +9,11 @@ const {
 } = require('../controllers/ets.contoller');
 const { etsValidator } = require('../validation/ets.validation');
 
-router.post(
-  '/create/ets/:userId',
-  checkName,
-  multer,
-  constrollorCreateService
-);
+router.post('/create/ets/:userId', checkName, multer, constrollorCreateService);
 
 router.get('/read/all/ets/:userId', readAllEts);
 router.post('/test', multer, (req, res) => {
-  console.log(req.file);
-  console.log(req.body);
+  console.log(req.files);
   res.send('Ok');
 });
 router.get('read/one/ets/:etsId/:userId', (req, res) => {});
