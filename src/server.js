@@ -37,7 +37,7 @@ app.use(
 
 // Home page
 app.get('/', (req, res) => {
-  return res.send('<h1>Bienfafood API - v1 (29-07-2021)</h1>');
+  return res.send('<h1>Bienfafood API - v1 (29-07-2021 - 19h)</h1>');
 });
 
 // Database connexion
