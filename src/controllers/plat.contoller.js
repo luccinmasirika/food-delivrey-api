@@ -1,8 +1,10 @@
 const Plat = require('../models/Plat.model');
 const Ets = require('../models/Ets.model');
+const { Menu } = require('../models/Menu.model');
 const AppHttpError = require('../_helpers/appHttpError');
 const { ServiceCreate } = require('../services/create.service');
 const { readAllPlatService } = require('../services/plat.service');
+const { PushData } = require('../_helpers/pushData');
 
 async function constrollorCreateService(req, res, next) {
   try {
@@ -14,7 +16,12 @@ async function constrollorCreateService(req, res, next) {
     };
     const data = { ...req.body, ets, image };
     const response = new ServiceCreate(data, Plat);
-    await response.create();
+    const res = await response.create();
+    await new PushData(
+      Menu,
+      { plat: res._id },
+      { _id: req.body.menu }
+    ).onPush();
     res.json({ message: 'Opération réussi 😃' });
   } catch (error) {
     next(new AppHttpError('Une error est survenue' + error, 500));

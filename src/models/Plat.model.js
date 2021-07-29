@@ -8,7 +8,7 @@ const platSchema = Schema(
     delais: { type: Number, trim: true, required: true },
     description: { type: String, trim: true, required: true },
     promo: { type: Boolean, required: true, default: false },
-    dispo: { type: Boolean, required: true, default: true },
+    disable: { type: Boolean, required: true, default: true },
     image: String,
     autresImages: [{ type: String }],
     commande: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Commande' }],

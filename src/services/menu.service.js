@@ -17,8 +17,8 @@ async function disableAnable(params) {
 }
 
 async function readAllMenuService(params) {
-  const filters = {  };
-  const { page, limit, nom, ets, category } = params.query;
+  const filters = {};
+  const { page, limit, nom, ets, disable } = params.query;
   const query = {
     page: parseInt(page),
     limit: parseInt(limit),
@@ -36,8 +36,8 @@ async function readAllMenuService(params) {
     filters.ets = params.user.ets;
   }
 
-  if (category) {
-    filters.category = category;
+  if (disable) {
+    filters.disable = disable;
   }
 
   return await new GetService(
