@@ -38,7 +38,7 @@ async function constrollorCreateService(req, res, next) {
 
 async function validerCommande(req, res, next) {
   try {
-    if ((req.user.ets).toString() !== (req.commande.ets).toString()) {
+    if (req.user.ets.toString() !== req.commande.ets.toString()) {
       return next(
         new AppHttpError("Désolé, cette commande n'est pas la vôtre")
       );
@@ -147,6 +147,7 @@ async function readAllCommande(req, res, next) {
   try {
     const commande = await readAllCommandeService(req);
     if (!commande.total) return next(new AppHttpError('Pas commande trouvée'));
+    console.log('commande', commande);
     res.json(commande);
   } catch (error) {
     next(new AppHttpError('Une erreur est survenue' + error, 500));

@@ -4,6 +4,7 @@ const AppHttpError = require('../_helpers/appHttpError');
 const { ServiceCreate } = require('../services/create.service');
 const { readAllEtsService } = require('../services/ets.service');
 const { GetService } = require('../services/get.service');
+const { PushData } = require('../_helpers/pushData');
 
 async function constrollorCreateService(req, res, next) {
   try {
@@ -19,11 +20,7 @@ async function constrollorCreateService(req, res, next) {
     const response = new ServiceCreate(data, Ets);
     const ets = await response.create();
 
-    await new PushData(
-      Type,
-      { ets: ets._id },
-      { _id: req.body.type }
-    ).onPush();
+    await new PushData(Type, { ets: ets._id }, { _id: req.body.type }).onPush();
 
     res.json({ message: 'Opération réussi 😃' });
   } catch (error) {

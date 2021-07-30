@@ -31,7 +31,7 @@ async function readAllCommandeService(params) {
   if (etat) {
     filters.etat = etat;
   }
-  
+
   return await new GetService(
     Commande.find().populate('client').populate('produit').populate('ets'),
     query,

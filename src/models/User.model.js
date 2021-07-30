@@ -16,6 +16,11 @@ const userSchema = Schema(
     disable: { type: Boolean, default: false },
     adresse: { type: String, trim: true },
     ets: { type: mongoose.Schema.Types.ObjectId, ref: 'Ets' },
+    stat: {
+      un: { type: Number, min: 0 },
+      deux: { type: Number, min: 0 },
+      trois: { type: Number, min: 0 },
+    },
     commande: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Commande' }],
   },
   { timestamps: true }
