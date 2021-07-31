@@ -2,9 +2,11 @@ const { Menu, Category } = require('../models/Menu.model');
 const Ets = require('../models/Ets.model');
 const AppHttpError = require('../_helpers/appHttpError');
 const { ServiceCreate } = require('../services/create.service');
+const { ServiceUpdate } = require('../services/update.service');
 const {
   readAllMenuService,
   readAllCatService,
+  disableAnable,
 } = require('../services/menu.service');
 const { PushData } = require('../_helpers/pushData');
 
@@ -26,6 +28,26 @@ async function constrollorCreateService(req, res, next) {
     res.json({ message: 'Opération réussi 😃' });
   } catch (error) {
     next(new AppHttpError('Une error est survenue' + error, 500));
+  }
+}
+
+async function updateMenu(req, res, next) {
+  console.log(req.body);
+  try {
+    const response = new ServiceUpdate(req, Menu);
+    await response.update();
+    return res.json({ message: 'Opération réussi 😃' });
+  } catch (error) {
+    next(new AppHttpError('Une erreur est survenue' + error, 500));
+  }
+}
+
+async function disableUnableControllor(req, res, next) {
+  try {
+    await disableAnable(req.query._id);
+    return res.json({ message: 'Opération réussi 😃' });
+  } catch (error) {
+    next(new AppHttpError('Une erreur est survenue' + error, 500));
   }
 }
 
@@ -67,4 +89,6 @@ module.exports = {
   constrollorCreateCategoryService,
   readAllMenu,
   readAllCat,
+  disableUnableControllor,
+  updateMenu,
 };

@@ -2,8 +2,8 @@ const Ets = require('../models/Ets.model');
 const Type = require('../models/Type.model');
 const AppHttpError = require('../_helpers/appHttpError');
 const { ServiceCreate } = require('../services/create.service');
-const { readAllEtsService } = require('../services/ets.service');
-const { GetService } = require('../services/get.service');
+const { ServiceUpdate } = require('../services/update.service');
+const { readAllEtsService, disableAnable } = require('../services/ets.service');
 const { PushData } = require('../_helpers/pushData');
 
 async function constrollorCreateService(req, res, next) {
@@ -28,6 +28,45 @@ async function constrollorCreateService(req, res, next) {
   }
 }
 
+async function updateEts(req, res, next) {
+  const ets = await Ets.findOne(
+    { _id: req.query._id },
+    { heure: 1, localisation: 1 }
+  );
+
+  req.body.heure = {
+    ouverture: req.body.ouverture || ets.heure.ouverture,
+    fermeture: req.body.fermeture || ets.heure.fermeture,
+  };
+
+  req.body.localisation = {
+    long: req.body.long || ets.localisation.long,
+    lat: req.body.lat || ets.localisation.lat,
+  };
+
+  req.body.ouverture && delete req.body.ouverture;
+  req.body.fermeture && delete req.body.fermeture;
+  req.body.long && delete req.body.long;
+  req.body.lat && delete req.body.lat;
+
+  try {
+    const response = new ServiceUpdate(req, Ets);
+    await response.update();
+    return res.json({ message: 'Opération réussi 😃' });
+  } catch (error) {
+    next(new AppHttpError('Une erreur est survenue' + error, 500));
+  }
+}
+
+async function disableUnableControllor(req, res, next) {
+  try {
+    await disableAnable(req.query._id);
+    return res.json({ message: 'Opération réussi 😃' });
+  } catch (error) {
+    next(new AppHttpError('Une erreur est survenue' + error, 500));
+  }
+}
+
 async function readAllEts(req, res, next) {
   try {
     const ets = await readAllEtsService(req.query);
@@ -42,4 +81,9 @@ async function readAllEts(req, res, next) {
   }
 }
 
-module.exports = { constrollorCreateService, readAllEts };
+module.exports = {
+  constrollorCreateService,
+  readAllEts,
+  updateEts,
+  disableUnableControllor,
+};

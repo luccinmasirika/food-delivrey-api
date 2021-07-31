@@ -1,7 +1,7 @@
 const Type = require('../models/Type.model');
 const AppHttpError = require('../_helpers/appHttpError');
 const { ServiceCreate } = require('../services/create.service');
-const { GetService } = require('../services/get.service');
+const { ServiceUpdate } = require('../services/update.service');
 const { readAllTypeService } = require('../services/type.service');
 
 async function constrollorCreateService(req, res, next) {
@@ -18,6 +18,16 @@ async function constrollorCreateService(req, res, next) {
   }
 }
 
+async function updateType(req, res, next) {
+  try {
+    const response = new ServiceUpdate(req, Type);
+    await response.update();
+    return res.json({ message: 'Opération réussi 😃' });
+  } catch (error) {
+    next(new AppHttpError('Une erreur est survenue' + error, 500));
+  }
+}
+
 async function readAllType(req, res, next) {
   try {
     const type = await readAllTypeService(req);
@@ -30,4 +40,4 @@ async function readAllType(req, res, next) {
   }
 }
 
-module.exports = { constrollorCreateService, readAllType };
+module.exports = { constrollorCreateService, readAllType, updateType };

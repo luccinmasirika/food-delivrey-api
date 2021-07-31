@@ -1,19 +1,19 @@
 const { GetService } = require('./get.service');
 const { Menu, Category } = require('../models/Menu.model');
+const Ets = require('../models/Ets.model');
 const Plat = require('../models/Plat.model');
 const AppHttpError = require('../_helpers/appHttpError');
 
 async function disableAnable(params) {
   const menu = await Menu.findOne({ _id: params }).exec();
-  if (menu.ets.disable) {
-    await Menu.updateOne({ _id: params }, { $set: { disable: !menu.disable } });
-    await Plat.updateMany(
-      { menu: params },
-      { $set: { disable: !ets.disable } }
-    );
-    return true;
+  const ets = await Ets.findOne({ _id: menu.ets }, { disable: 1 }).exec();
+
+  if (ets.disable) {
+    throw new AppHttpError('Denied ! Establisment is disabled', 400);
   }
-  throw new AppHttpError('Denied ! Establisment is disabled', 400);
+  await Menu.updateOne({ _id: params }, { $set: { disable: !menu.disable } });
+  await Plat.updateMany({ menu: params }, { $set: { disable: !menu.disable } });
+  return true;
 }
 
 async function readAllMenuService(params) {

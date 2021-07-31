@@ -1,6 +1,6 @@
 const { GetService } = require('./get.service');
 const Ets = require('../models/Ets.model');
-const Menu = require('../models/Menu.model');
+const { Menu } = require('../models/Menu.model');
 const Plat = require('../models/Plat.model');
 
 async function disableAnable(params) {

@@ -9,32 +9,21 @@ const etsValidator = (req, res, next) => {
       .label('La description est obligatoire')
       .min(1)
       .required(),
-    ouverture: Joi.string()
-      .label("L'heure d'ouverture est obligatoire")
-      .min(1)
-      .max(32)
-      .required(),
-    fermeture: Joi.string()
-      .label("L'heure de fermeture est obligatoire")
-      .min(1)
-      .max(32)
-      .required(),
-    long: Joi.string()
-      .label('La longitude est obligatoire')
-      .min(1)
-      .max(32)
-      .required(),
-    lat: Joi.string()
-      .label('La latitude est obligatoire')
-      .min(1)
-      .max(32)
-      .required(),
-    disable: Joi.any().label('Actif'),
     type: Joi.string()
       .label('Le type est obligatoire')
       .min(1)
       .max(32)
       .required(),
+    ouverture: Joi.string()
+      .label("L'heure d'ouverture est obligatoire")
+      .min(1)
+      .required(),
+    fermeture: Joi.string()
+      .label("L'heure de fermeture est obligatoire")
+      .min(1)
+      .required(),
+    long: Joi.string().label('La longitude est obligatoire').min(1).required(),
+    lat: Joi.string().label('La latitude est obligatoire').min(1).required(),
     image: Joi.string().label('Image').min(1).max(32),
   });
   validateRequest(req, res, next, schema);

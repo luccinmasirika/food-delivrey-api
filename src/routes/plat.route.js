@@ -16,14 +16,15 @@ router.post(
   '/create/plat/:userId',
   checkName,
   multer,
+  platValidator,
   constrollorCreateService
 );
 
-router.post(
-  '/create/images/plat/:userId',
-  multerArray,
-  constrollorCreateService
-);
+// router.post(
+//   '/create/images/plat/:userId',
+//   multerArray,
+//   constrollorCreateService
+// );
 
 router.get('/read/all/plat/:userId', readAllPlat);
 
