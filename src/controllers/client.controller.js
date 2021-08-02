@@ -10,6 +10,6 @@ exports.readAllClient = async (req, res, next) => {
     }
     res.json(client);
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 };

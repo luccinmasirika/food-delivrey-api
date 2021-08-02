@@ -29,4 +29,18 @@ const etsValidator = (req, res, next) => {
   validateRequest(req, res, next, schema);
 };
 
-module.exports = { etsValidator };
+const etsEditValidator = (req, res, next) => {
+  const schema = Joi.object().keys({
+    nom: Joi.string().label('Invalid name').min(3).max(32).empty(''),
+    description: Joi.string().label('Invalid description').min(1).empty(''),
+    type: Joi.string().label('Invalid type').min(1).max(32).empty(''),
+    ouverture: Joi.string().label('Invalid open time').min(1).empty(''),
+    fermeture: Joi.string().label('Invalid close time').min(1).empty(''),
+    long: Joi.string().label('Invalid long').min(1).empty(''),
+    lat: Joi.string().label('Invalid lat').min(1).empty(''),
+    image: Joi.string().label('Image').min(1).max(32),
+  });
+  validateRequest(req, res, next, schema);
+};
+
+module.exports = { etsValidator, etsEditValidator };

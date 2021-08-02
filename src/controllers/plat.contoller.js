@@ -26,7 +26,7 @@ async function constrollorCreateService(req, res, next) {
       { plat: pushData._id },
       { _id: req.body.menu }
     ).onPush();
-    res.json({ message: 'Opération réussi 😃', _id: pushData._id });
+    res.json({ message: 'Success operation', _id: pushData._id });
   } catch (error) {
     next(new AppHttpError('Une error est survenue' + error, 500));
   }
@@ -41,27 +41,27 @@ async function addOtherImages(req, res, next) {
       { _id },
       { $push: { autresImages: image } }
     );
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue', 500));
+    next(new AppHttpError('An error has occurred', 500));
   }
 }
 
 async function promoControllor(req, res, next) {
   try {
     await promo(req.query._id);
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue', 500));
+    next(new AppHttpError('An error has occurred', 500));
   }
 }
 
 async function disableUnableControllor(req, res, next) {
   try {
     await disableAnable(req.query._id);
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
@@ -73,7 +73,7 @@ async function readAllPlat(req, res, next) {
     }
     res.json(plat);
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 

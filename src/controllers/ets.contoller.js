@@ -22,7 +22,7 @@ async function constrollorCreateService(req, res, next) {
 
     await new PushData(Type, { ets: ets._id }, { _id: req.body.type }).onPush();
 
-    res.json({ message: 'Opération réussi 😃' });
+    res.json({ message: 'Success operation' });
   } catch (error) {
     next(new AppHttpError('Une error est survenue' + error, 500));
   }
@@ -52,18 +52,18 @@ async function updateEts(req, res, next) {
   try {
     const response = new ServiceUpdate(req, Ets);
     await response.update();
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
 async function disableUnableControllor(req, res, next) {
   try {
     await disableAnable(req.query._id);
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
@@ -77,7 +77,7 @@ async function readAllEts(req, res, next) {
 
     res.json(ets);
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 

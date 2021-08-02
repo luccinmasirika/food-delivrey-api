@@ -5,8 +5,7 @@ const AppHttpError = require('../_helpers/appHttpError');
 async function getConfigByID(req, res, next, id) {
   try {
     const config = await Config.findById(id).exec();
-    if (!config)
-      return res.status(400).json({ error: "L'id n'existe pas" });
+    if (!config) return res.status(400).json({ error: "L'id n'existe pas" });
     req.config = config;
     next();
   } catch (error) {
@@ -45,7 +44,7 @@ async function checkName(req, res, next) {
     }
     return next();
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue' + error, 500));
+    return next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 

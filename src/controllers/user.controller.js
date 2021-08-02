@@ -73,7 +73,7 @@ exports.deleteUser = async (req, res) => {
 exports.disableAnableUser = async (req, res) => {
   try {
     await disableAnableUser(req.user._id);
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {}
 };
 
@@ -86,7 +86,7 @@ exports.readAllUser = async (req, res, next) => {
     }
     res.json(users);
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error));
+    next(new AppHttpError('An error has occurred' + error));
   }
 };
 
@@ -98,6 +98,6 @@ exports.readAllAdmin = async (req, res, next) => {
     }
     res.json(users);
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error));
+    next(new AppHttpError('An error has occurred' + error));
   }
 };

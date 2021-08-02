@@ -7,7 +7,6 @@ async function serviceConfigUpdate(params) {
 
 async function serviceDeviseCreate(params) {
   const data = new Devise(params);
-  console.log(data);
   await data.save();
 }
 
@@ -19,7 +18,7 @@ async function readAllDeviseService() {
   return await Devise.find().exec();
 }
 async function serviceReadConfig() {
-  return await Config.findOne({}).exec();
+  return await Config.findOne({}).populate('devise').exec();
 }
 
 module.exports = {

@@ -31,7 +31,7 @@ exports.signin = async (req, res, next) => {
       return next(new AppHttpError(error.message, error.status));
     }
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue', 500));
+    return next(new AppHttpError('An error has occurred', 500));
   }
 };
 
@@ -40,7 +40,7 @@ exports.read = async (req, res) => {
     return res.json(req.user);
   } catch (error) {
     return res.status(500).json({
-      error: 'Une erreur est survenue !',
+      error: 'An error has occurred !',
     });
   }
 };
@@ -54,7 +54,7 @@ exports.readAllLivreur = async (req, res, next) => {
     }
     res.json(livreurs);
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 };
 
@@ -67,7 +67,7 @@ exports.updateProfile = async (req, res) => {
     return res.json({ message: 'Profil mis à jour 😃' });
   } catch (error) {
     return res.status(500).json({
-      error: 'Une erreur est survenue !',
+      error: 'An error has occurred !',
     });
   }
 };
@@ -81,7 +81,7 @@ exports.updateInfo = async (req, res) => {
     return res.json({ message: 'Informations mises à jour 😃' });
   } catch (error) {
     return res.status(500).json({
-      error: 'Une erreur est survenue !',
+      error: 'An error has occurred !',
     });
   }
 };
@@ -91,13 +91,13 @@ exports.deleteLivreur = async (req, res) => {
     await deleteLivreur(req.livreur._id);
     return res.json('User deleted');
   } catch (error) {
-    return res.status(500).json({ error: 'Une erreur est survenue !' });
+    return res.status(500).json({ error: 'An error has occurred !' });
   }
 };
 
 exports.disableAnableLivreur = async (req, res) => {
   try {
     await disableAnableLivreur(req.livreur._id);
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {}
 };

@@ -17,37 +17,30 @@ async function constrollorCreateService(req, res, next) {
     const response = new ServiceCreate(data, Menu);
     const menu = await response.create();
 
-    await new PushData(
-      Category,
-      { menu: menu._id },
-      { _id: req.body.category }
-    ).onPush();
-
     await new PushData(Ets, { menu: menu._id }, { _id: req.body.ets }).onPush();
 
-    res.json({ message: 'Opération réussi 😃' });
+    res.json({ message: 'Success operation' });
   } catch (error) {
     next(new AppHttpError('Une error est survenue' + error, 500));
   }
 }
 
 async function updateMenu(req, res, next) {
-  console.log(req.body);
   try {
     const response = new ServiceUpdate(req, Menu);
     await response.update();
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
 async function disableUnableControllor(req, res, next) {
   try {
     await disableAnable(req.query._id);
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
@@ -55,9 +48,9 @@ async function constrollorCreateCategoryService(req, res, next) {
   try {
     const response = new ServiceCreate(req.body, Category);
     await response.create();
-    res.json({ message: 'Opération réussi 😃' });
+    res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
@@ -69,7 +62,7 @@ async function readAllMenu(req, res, next) {
     }
     res.json(menu);
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
@@ -81,7 +74,7 @@ async function readAllCat(req, res, next) {
     }
     res.json(cat);
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 module.exports = {

@@ -4,20 +4,15 @@ const validateRequest = require('./validatorsRequest');
 // CONFIG VALIDATORS
 const configValidator = (req, res, next) => {
   const schema = Joi.object().keys({
-    devise: Joi.string()
-      .label('La devise est obligatoire')
-      .min(1)
-      .max(32)
-      .required(),
     rayonLimite: Joi.number()
-      .label('Le rayon est obligatoire')
+      .label('Invalid delivrery radius')
       .min(1)
       .max(32)
-      .required(),
+      .empty(''),
     fraisParKm: Joi.number()
-      .label('Le prix par km est obligatoire')
+      .label('Invalid fee delivrery per Km')
       .min(1)
-      .required(),
+      .empty(''),
   });
   validateRequest(req, res, next, schema);
 };

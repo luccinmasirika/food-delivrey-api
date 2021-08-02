@@ -29,6 +29,6 @@ exports.signin = async (req, res, next) => {
       return next(new AppHttpError(error.message, error.status));
     }
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue', 500));
+    return next(new AppHttpError('An error has occurred', 500));
   }
 };

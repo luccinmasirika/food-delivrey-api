@@ -9,7 +9,10 @@ const {
   readAllType,
   updateType,
 } = require('../controllers/type.contoller');
-const { typeValidator } = require('../validation/type.validation');
+const {
+  typeValidator,
+  typeEditValidator,
+} = require('../validation/type.validation');
 
 router.post(
   '/create/type/:userId',
@@ -20,7 +23,14 @@ router.post(
   typeValidator,
   constrollorCreateService
 );
-router.put('/update/type/:userId', requireSignin, isAuth, multer, updateType);
+router.put(
+  '/update/type/:userId',
+  requireSignin,
+  isAuth,
+  multer,
+  typeEditValidator,
+  updateType
+);
 router.get('/read/all/type/:userId', requireSignin, isAuth, readAllType);
 
 router.param('userId', getUserByID);

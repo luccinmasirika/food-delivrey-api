@@ -27,7 +27,7 @@ async function constrollorCreateService(req, res, next) {
         });
         await commande.save();
       }
-      res.json({ message: 'Opération réussi 😃' });
+      res.json({ message: 'Success operation' });
     } catch (error) {
       next(new AppHttpError('Une error est survenue' + error, 500));
     }
@@ -47,9 +47,9 @@ async function validerCommande(req, res, next) {
       { _id: req.commande._id },
       { $set: { etat: req.body.etat } }
     );
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue' + error));
+    return next(new AppHttpError('An error has occurred' + error));
   }
 }
 
@@ -82,9 +82,9 @@ async function livrerCommande(req, res, next) {
       { _id: req.commande._id, etat: 'VALIDATED' },
       { $set: { etat: 'PENDING_FOR_PAYMENT', livreur: req.user._id } }
     );
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue' + error, 500));
+    return next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
@@ -127,9 +127,9 @@ async function payerCommande(req, res, next) {
           commande: check._id,
         });
         await addToList.save();
-        return res.json({ message: 'Opération réussi 😃' });
+        return res.json({ message: 'Success operation' });
       } catch (error) {
-        return next(new AppHttpError('Une erreur est survenue' + error));
+        return next(new AppHttpError('An error has occurred' + error));
       }
     }
 
@@ -137,9 +137,9 @@ async function payerCommande(req, res, next) {
       { _id: req.commande._id },
       { $set: { etat: req.body.etat } }
     );
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue' + error));
+    return next(new AppHttpError('An error has occurred' + error));
   }
 }
 
@@ -150,7 +150,7 @@ async function readAllCommande(req, res, next) {
     console.log('commande', commande);
     res.json(commande);
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 

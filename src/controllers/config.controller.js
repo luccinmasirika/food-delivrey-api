@@ -10,27 +10,27 @@ const {
 async function updateConfig(req, res, next) {
   try {
     await serviceConfigUpdate(req.body);
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue' + error, 500));
+    return next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
 async function createDevise(req, res, next) {
   try {
     await serviceDeviseCreate(req.body);
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue' + error, 500));
+    return next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
 async function updateDevise(req, res, next) {
   try {
     await serviceDeviseUpdate(req.body, req.devise._id);
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue' + error, 500));
+    return next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
@@ -38,9 +38,9 @@ async function updateLogo(req, res, next) {
   try {
     const logo = `images/${req.file.filename}`;
     await serviceConfigUpdate({ logo });
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue' + error, 500));
+    return next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
@@ -48,9 +48,9 @@ async function updateIcon(req, res, next) {
   try {
     const icon = `images/${req.file.filename}`;
     await serviceConfigUpdate({ icon });
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue' + error, 500));
+    return next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
@@ -68,7 +68,7 @@ async function readAllDevise(req, res, next) {
     const devise = await readAllDeviseService();
     res.json(devise);
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 

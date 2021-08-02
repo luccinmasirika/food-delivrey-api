@@ -10,7 +10,10 @@ const {
   updateEts,
   disableUnableControllor,
 } = require('../controllers/ets.contoller');
-const { etsValidator } = require('../validation/ets.validation');
+const {
+  etsValidator,
+  etsEditValidator,
+} = require('../validation/ets.validation');
 
 router.post(
   '/create/ets/:userId',
@@ -20,7 +23,14 @@ router.post(
   constrollorCreateService
 );
 router.get('/read/all/ets/:userId', requireSignin, isAuth, readAllEts);
-router.put('/update/ets/:userId', requireSignin, isAuth, multer, updateEts);
+router.put(
+  '/update/ets/:userId',
+  requireSignin,
+  isAuth,
+  multer,
+  etsEditValidator,
+  updateEts
+);
 router.get('/disableUnable/ets/:userId', disableUnableControllor);
 
 router.param('userId', getUserByID);

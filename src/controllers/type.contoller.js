@@ -12,7 +12,7 @@ async function constrollorCreateService(req, res, next) {
     const data = { ...req.body, image };
     const response = new ServiceCreate(data, Type);
     await response.create();
-    res.json({ message: 'Opération réussi 😃' });
+    res.json({ message: 'Success operation' });
   } catch (error) {
     next(new AppHttpError('Une error est survenue' + error, 500));
   }
@@ -22,9 +22,9 @@ async function updateType(req, res, next) {
   try {
     const response = new ServiceUpdate(req, Type);
     await response.update();
-    return res.json({ message: 'Opération réussi 😃' });
+    return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
@@ -36,7 +36,7 @@ async function readAllType(req, res, next) {
     }
     res.json(type);
   } catch (error) {
-    next(new AppHttpError('Une erreur est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 

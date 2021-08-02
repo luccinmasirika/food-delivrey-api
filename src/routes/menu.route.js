@@ -19,7 +19,7 @@ const {
 } = require('../controllers/menu.contoller');
 const {
   menuValidator,
-  categoryValidator,
+  menuEditValidator,
 } = require('../validation/menu.validation');
 
 router.post(
@@ -30,15 +30,15 @@ router.post(
   constrollorCreateService
 );
 
-router.post(
-  '/create/category/:userId',
-  categoryValidator,
-  checkCategoryName,
-  constrollorCreateCategoryService
-);
-
 router.get('/read/all/menu/:userId', requireSignin, isAuth, readAllMenu);
-router.put('/update/menu/:userId', requireSignin, isAuth, multer, updateMenu);
+router.put(
+  '/update/menu/:userId',
+  requireSignin,
+  isAuth,
+  multer,
+  menuEditValidator,
+  updateMenu
+);
 router.get(
   '/disableUnable/menu/:userId',
   requireSignin,

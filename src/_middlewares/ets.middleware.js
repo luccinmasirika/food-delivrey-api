@@ -19,14 +19,14 @@ async function getEtsByID(req, res, next, id) {
 async function checkName(req, res, next) {
   try {
     const data = await Ets.findOne({
-      nom: req.body.nom
+      nom: req.body.nom,
     }).exec();
     if (data && data.nom) {
       return next(new AppHttpError('Ce nom déjà pris', 400));
     }
     return next();
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue' + error, 500));
+    return next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 

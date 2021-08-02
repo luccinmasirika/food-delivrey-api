@@ -32,7 +32,7 @@ router.put(
 );
 router.put('/update/config/:userId', configValidator, updateConfig);
 router.get('/read/all/devise/:userId', readAllDevise);
-router.get('/read/config', readConfig);
+router.get('/read/config/:userId', readConfig);
 
 router.param('userId', getUserByID);
 router.param('configId', getConfigByID);

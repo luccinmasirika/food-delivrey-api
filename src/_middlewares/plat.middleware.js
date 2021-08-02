@@ -26,7 +26,7 @@ async function checkName(req, res, next) {
     }
     return next();
   } catch (error) {
-    return next(new AppHttpError('Une erreur est survenue' + error, 500));
+    return next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
