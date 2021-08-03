@@ -1,6 +1,6 @@
 const Plat = require('../models/Plat.model');
 const Ets = require('../models/Ets.model');
-const { Menu } = require('../models/Menu.model');
+const Menu = require('../models/Menu.model');
 const AppHttpError = require('../_helpers/appHttpError');
 const { ServiceCreate } = require('../services/create.service');
 const {
@@ -61,19 +61,16 @@ async function disableUnableControllor(req, res, next) {
     await disableAnable(req.query._id);
     return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('An error has occurred' + error, 500));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
   }
 }
 
 async function readAllPlat(req, res, next) {
   try {
     const plat = await readAllPlatService(req);
-    if (!plat.total) {
-      return next(new AppHttpError('Pas de plat touvé', 400));
-    }
     res.json(plat);
   } catch (error) {
-    next(new AppHttpError('An error has occurred' + error, 500));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
   }
 }
 

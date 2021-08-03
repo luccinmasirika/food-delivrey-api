@@ -49,7 +49,9 @@ async function validerCommande(req, res, next) {
     );
     return res.json({ message: 'Success operation' });
   } catch (error) {
-    return next(new AppHttpError('An error has occurred' + error));
+    return next(
+      new AppHttpError('An error has occurred.' + ' ' + error.message)
+    );
   }
 }
 
@@ -84,7 +86,9 @@ async function livrerCommande(req, res, next) {
     );
     return res.json({ message: 'Success operation' });
   } catch (error) {
-    return next(new AppHttpError('An error has occurred' + error, 500));
+    return next(
+      new AppHttpError('An error has occurred.' + ' ' + error.message, 500)
+    );
   }
 }
 
@@ -129,7 +133,9 @@ async function payerCommande(req, res, next) {
         await addToList.save();
         return res.json({ message: 'Success operation' });
       } catch (error) {
-        return next(new AppHttpError('An error has occurred' + error));
+        return next(
+          new AppHttpError('An error has occurred.' + ' ' + error.message)
+        );
       }
     }
 
@@ -139,18 +145,18 @@ async function payerCommande(req, res, next) {
     );
     return res.json({ message: 'Success operation' });
   } catch (error) {
-    return next(new AppHttpError('An error has occurred' + error));
+    return next(
+      new AppHttpError('An error has occurred.' + ' ' + error.message)
+    );
   }
 }
 
 async function readAllCommande(req, res, next) {
   try {
     const commande = await readAllCommandeService(req);
-    if (!commande.total) return next(new AppHttpError('Pas commande trouvée'));
-    console.log('commande', commande);
     res.json(commande);
   } catch (error) {
-    next(new AppHttpError('An error has occurred' + error, 500));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
   }
 }
 

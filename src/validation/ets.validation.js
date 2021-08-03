@@ -4,26 +4,16 @@ const validateRequest = require('./validatorsRequest');
 // ETS VALIDATORS
 const etsValidator = (req, res, next) => {
   const schema = Joi.object().keys({
-    nom: Joi.string().label('Le nom est obligatoire').min(1).max(32).required(),
+    nom: Joi.string().label('Name is required').min(1).max(32).required(),
     description: Joi.string()
-      .label('La description est obligatoire')
+      .label('Description is required')
       .min(1)
       .required(),
-    type: Joi.string()
-      .label('Le type est obligatoire')
-      .min(1)
-      .max(32)
-      .required(),
-    ouverture: Joi.string()
-      .label("L'heure d'ouverture est obligatoire")
-      .min(1)
-      .required(),
-    fermeture: Joi.string()
-      .label("L'heure de fermeture est obligatoire")
-      .min(1)
-      .required(),
-    long: Joi.string().label('La longitude est obligatoire').min(1).required(),
-    lat: Joi.string().label('La latitude est obligatoire').min(1).required(),
+    type: Joi.string().label('Type is required').min(1).max(32).required(),
+    ouverture: Joi.string().label('Opening Hour is required').min(1).required(),
+    fermeture: Joi.string().label('Closure Hour is required').min(1).required(),
+    long: Joi.string().label('Longitude is required').min(1).required(),
+    lat: Joi.string().label('Latitude is required').min(1).required(),
     image: Joi.string().label('Image').min(1).max(32),
   });
   validateRequest(req, res, next, schema);

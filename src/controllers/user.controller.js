@@ -22,9 +22,6 @@ exports.read = async (req, res) => {
 exports.readAll = async (req, res) => {
   try {
     const users = await getAllUser(req.user._id);
-    if (!users) {
-      return res.status(400).json({ error: "Pas d'utilisateur trouvé" });
-    }
     return res.json(users);
   } catch (error) {
     return res.status(500).json({
@@ -86,7 +83,7 @@ exports.readAllUser = async (req, res, next) => {
     }
     res.json(users);
   } catch (error) {
-    next(new AppHttpError('An error has occurred' + error));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message));
   }
 };
 
@@ -98,6 +95,6 @@ exports.readAllAdmin = async (req, res, next) => {
     }
     res.json(users);
   } catch (error) {
-    next(new AppHttpError('An error has occurred' + error));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message));
   }
 };

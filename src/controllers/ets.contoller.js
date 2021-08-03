@@ -31,7 +31,7 @@ async function constrollorCreateService(req, res, next) {
 async function updateEts(req, res, next) {
   const ets = await Ets.findOne(
     { _id: req.query._id },
-    { heure: 1, localisation: 1 }
+    { heure: 1, localisation: 1, type: 1 }
   );
 
   req.body.heure = {
@@ -50,11 +50,19 @@ async function updateEts(req, res, next) {
   req.body.lat && delete req.body.lat;
 
   try {
+    if (req.body.type) {
+      await new PushData(Type, { ets: ets._id }, { _id: ets.type }).onPull();
+      await new PushData(
+        Type,
+        { ets: ets._id },
+        { _id: req.body.type }
+      ).onPush();
+    }
     const response = new ServiceUpdate(req, Ets);
     await response.update();
     return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('An error has occurred' + error, 500));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
   }
 }
 
@@ -63,21 +71,16 @@ async function disableUnableControllor(req, res, next) {
     await disableAnable(req.query._id);
     return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('An error has occurred' + error, 500));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
   }
 }
 
 async function readAllEts(req, res, next) {
   try {
     const ets = await readAllEtsService(req.query);
-    if (!ets.total) return next(new AppHttpError("Pas d'établissement trouvé"));
-    const myFilter = (el) => {
-      return !el.type.disable;
-    };
-
     res.json(ets);
   } catch (error) {
-    next(new AppHttpError('An error has occurred' + error, 500));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
   }
 }
 

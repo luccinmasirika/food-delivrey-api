@@ -11,9 +11,7 @@ const { multer } = require('../_middlewares/multer.middleware');
 const { requireSignin, isAuth } = require('../_middlewares/auth.middleware');
 const {
   constrollorCreateService,
-  constrollorCreateCategoryService,
   readAllMenu,
-  readAllCat,
   disableUnableControllor,
   updateMenu,
 } = require('../controllers/menu.contoller');
@@ -45,7 +43,6 @@ router.get(
   isAuth,
   disableUnableControllor
 );
-router.get('/read/all/category/:userId', requireSignin, isAuth, readAllCat);
 
 router.param('userId', getUserByID);
 

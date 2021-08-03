@@ -14,17 +14,4 @@ const menuSchema = Schema(
   { timestamps: true }
 );
 
-const Menu = model('Menu', menuSchema);
-
-const categorySchema = Schema(
-  {
-    nom: { type: String, trim: true, required: true },
-    disable: { type: Boolean, default: false },
-    menu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Menu' }],
-  },
-  { timestamps: true }
-);
-
-const Category = model('Category', categorySchema);
-
-module.exports = { Menu, Category };
+module.exports = model('Menu', menuSchema);

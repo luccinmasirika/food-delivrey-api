@@ -1,5 +1,5 @@
 const { GetService } = require('./get.service');
-const { Menu, Category } = require('../models/Menu.model');
+const Menu = require('../models/Menu.model');
 const Ets = require('../models/Ets.model');
 const Plat = require('../models/Plat.model');
 const AppHttpError = require('../_helpers/appHttpError');
@@ -9,7 +9,7 @@ async function disableAnable(params) {
   const ets = await Ets.findOne({ _id: menu.ets }, { disable: 1 }).exec();
 
   if (ets.disable) {
-    throw new AppHttpError('Denied ! Establisment is disabled', 400);
+    throw new AppHttpError('Establisment must be active', 400);
   }
   await Menu.updateOne({ _id: params }, { $set: { disable: !menu.disable } });
   await Plat.updateMany({ menu: params }, { $set: { disable: !menu.disable } });
@@ -47,19 +47,7 @@ async function readAllMenuService(params) {
   ).pagination();
 }
 
-async function readAllCatService(params) {
-  const filters = {};
-  const { page, limit } = params.query;
-  const query = {
-    page: parseInt(page),
-    limit: parseInt(limit),
-  };
-
-  return await new GetService(Category.find(), query, filters).pagination();
-}
-
 module.exports = {
   readAllMenuService,
   disableAnable,
-  readAllCatService,
 };

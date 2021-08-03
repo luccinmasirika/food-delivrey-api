@@ -24,19 +24,16 @@ async function updateType(req, res, next) {
     await response.update();
     return res.json({ message: 'Success operation' });
   } catch (error) {
-    next(new AppHttpError('An error has occurred' + error, 500));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
   }
 }
 
 async function readAllType(req, res, next) {
   try {
     const type = await readAllTypeService(req);
-    if (!type.total) {
-      return next(new AppHttpError('Pas de type touvé', 400));
-    }
     res.json(type);
   } catch (error) {
-    next(new AppHttpError('An error has occurred' + error, 500));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
   }
 }
 

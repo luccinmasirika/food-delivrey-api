@@ -1,4 +1,4 @@
-const { Menu, Category } = require('../models/Menu.model');
+const Menu = require('../models/Menu.model');
 const AppHttpError = require('../_helpers/appHttpError');
 
 // Get type by ID from params
@@ -41,7 +41,9 @@ async function checkName(req, res, next) {
     }
     return next();
   } catch (error) {
-    return next(new AppHttpError('An error has occurred' + error, 500));
+    return next(
+      new AppHttpError('An error has occurred.' + ' ' + error.message, 500)
+    );
   }
 }
 
@@ -55,7 +57,9 @@ async function checkCategoryName(req, res, next) {
     }
     return next();
   } catch (error) {
-    return next(new AppHttpError('An error has occurred' + error, 500));
+    return next(
+      new AppHttpError('An error has occurred.' + ' ' + error.message, 500)
+    );
   }
 }
 

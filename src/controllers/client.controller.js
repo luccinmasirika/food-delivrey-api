@@ -5,11 +5,8 @@ const { readAllClient } = require('../services/client.service');
 exports.readAllClient = async (req, res, next) => {
   try {
     const client = await readAllClient(req.query);
-    if (!client.total) {
-      return next(new AppHttpError('Pas de client trouvé', 400));
-    }
     res.json(client);
   } catch (error) {
-    next(new AppHttpError('An error has occurred' + error, 500));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
   }
 };

@@ -14,24 +14,17 @@ const menuValidator = (req, res, next) => {
       .min(1)
       .max(32)
       .required(),
-    image: Joi.string().label('Image is required').min(1).max(32).required(),
+    image: Joi.string().label('Image is required').min(1).max(32),
   });
   validateRequest(req, res, next, schema);
 };
 
 const menuEditValidator = (req, res, next) => {
   const schema = Joi.object().keys({
-    nom: Joi.string().label('Name is required').min(1).max(32).required(),
-    description: Joi.string()
-      .label('Description is required')
-      .min(1)
-      .required(),
-    ets: Joi.string()
-      .label('Establishment is required')
-      .min(1)
-      .max(32)
-      .required(),
-    image: Joi.string().label('Image is required').min(1).max(32),
+    nom: Joi.string().label('Invalid name').min(1).max(32).empty(),
+    description: Joi.string().label('Invalid description').min(1).empty(),
+    ets: Joi.string().label('Invalid establishment').min(1).max(32).empty(),
+    image: Joi.string().label('Invalid image').min(1).max(32),
   });
   validateRequest(req, res, next, schema);
 };
