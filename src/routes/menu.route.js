@@ -22,8 +22,8 @@ const {
 
 router.post(
   '/create/menu/:userId',
-  checkName,
   multer,
+  checkName,
   menuValidator,
   constrollorCreateService
 );
@@ -34,6 +34,7 @@ router.put(
   requireSignin,
   isAuth,
   multer,
+  checkName,
   menuEditValidator,
   updateMenu
 );

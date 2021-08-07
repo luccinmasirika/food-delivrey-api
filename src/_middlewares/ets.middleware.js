@@ -1,5 +1,6 @@
 const Ets = require('../models/Ets.model');
 const AppHttpError = require('../_helpers/appHttpError');
+const slugify = require('slugify');
 
 // Get ets by ID from params
 async function getEtsByID(req, res, next, id) {
@@ -17,19 +18,32 @@ async function getEtsByID(req, res, next, id) {
 }
 
 async function checkName(req, res, next) {
-  try {
-    const data = await Ets.findOne({
-      nom: req.body.nom,
-    }).exec();
-    if (data && data.nom) {
-      return next(new AppHttpError('Ce nom déjà pris', 400));
+  if (req.body.nom) {
+    try {
+      const slug = slugify(req.body.nom, { lower: true, strict: true });
+      const data = await Ets.findOne({
+        slug,
+      }).exec();
+
+      if (
+        req.query._id &&
+        data &&
+        data._id.toString() === req.query._id.toString()
+      ) {
+        return next();
+      }
+
+      if (data) {
+        return next(new AppHttpError('This name already taken', 400));
+      }
+      return next();
+    } catch (error) {
+      return next(
+        new AppHttpError('An error has occurred.' + ' ' + error.message, 500)
+      );
     }
-    return next();
-  } catch (error) {
-    return next(
-      new AppHttpError('An error has occurred.' + ' ' + error.message, 500)
-    );
   }
+  next();
 }
 
 module.exports = { checkName, getEtsByID };

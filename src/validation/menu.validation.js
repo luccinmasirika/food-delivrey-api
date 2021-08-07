@@ -21,9 +21,9 @@ const menuValidator = (req, res, next) => {
 
 const menuEditValidator = (req, res, next) => {
   const schema = Joi.object().keys({
-    nom: Joi.string().label('Invalid name').min(1).max(32).empty(),
-    description: Joi.string().label('Invalid description').min(1).empty(),
-    ets: Joi.string().label('Invalid establishment').min(1).max(32).empty(),
+    nom: Joi.string().label('Invalid name').min(1).max(32).empty(''),
+    description: Joi.string().label('Invalid description').min(1).empty(''),
+    ets: Joi.string().label('Invalid establishment').min(1).max(32).empty(''),
     image: Joi.string().label('Invalid image').min(1).max(32),
   });
   validateRequest(req, res, next, schema);

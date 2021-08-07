@@ -14,7 +14,6 @@ exports.requireSignin = (req, res, next) => {
     req.auth = decoded;
     next();
   } catch (error) {
-    console.log('error', error);
     return res.status(400).json({ error: 'Invalid token' });
   }
 };
@@ -29,7 +28,6 @@ exports.isAuth = (req, res, next) => {
     }
     next();
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ error: error });
   }
 };

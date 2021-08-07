@@ -32,7 +32,7 @@ async function promo(params) {
 
 async function readAllPlatService(params) {
   const filters = {};
-  const { page, limit, nom, ets, menu, promo, dispo } = params.query;
+  const { page, limit, nom, ets, menu, promo, disable } = params.query;
   const query = {
     page: parseInt(page),
     limit: parseInt(limit),
@@ -56,15 +56,13 @@ async function readAllPlatService(params) {
     filters.promo = promo;
   }
 
-  if (dispo) {
-    filters.dispo = dispo;
+  if (disable) {
+    filters.disable = disable;
   }
 
   if (menu) {
     filters.menu = menu;
   }
-
-  console.log(filters);
 
   return await new GetService(
     Plat.find().populate('menu').populate('ets._id'),

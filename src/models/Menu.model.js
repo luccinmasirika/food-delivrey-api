@@ -10,6 +10,7 @@ const menuSchema = Schema(
     disable: { type: Boolean, default: false },
     category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
     plat: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Plat' }],
+    slug: { type: String },
   },
   { timestamps: true }
 );

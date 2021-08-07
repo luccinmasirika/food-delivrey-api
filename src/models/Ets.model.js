@@ -8,7 +8,7 @@ const etsSchema = Schema(
     image: String,
     heure: {
       ouverture: { type: String, trim: true, required: true },
-      fermeture: { type: String, trim: true, required: true }
+      fermeture: { type: String, trim: true, required: true },
     },
     localisation: {
       long: { type: String, trim: true, required: true },
@@ -17,6 +17,7 @@ const etsSchema = Schema(
     disable: { type: Boolean, default: false },
     type: { type: mongoose.Schema.Types.ObjectId, ref: 'Type' },
     menu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Menu' }],
+    slug: { type: String, unique: true },
   },
   { timestamps: true }
 );

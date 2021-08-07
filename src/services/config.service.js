@@ -11,7 +11,7 @@ async function serviceDeviseCreate(params) {
 }
 
 async function serviceDeviseUpdate(params, id) {
-  await Devise.updateOne({ _id: id }, { $set: params }, { upsert: true });
+  await Devise.updateOne({ _id: id }, { $set: params });
 }
 
 async function readAllDeviseService() {

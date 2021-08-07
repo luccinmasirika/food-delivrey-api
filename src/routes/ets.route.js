@@ -17,8 +17,8 @@ const {
 
 router.post(
   '/create/ets/:userId',
-  checkName,
   multer,
+  checkName,
   etsValidator,
   constrollorCreateService
 );
@@ -28,6 +28,7 @@ router.put(
   requireSignin,
   isAuth,
   multer,
+  checkName,
   etsEditValidator,
   updateEts
 );

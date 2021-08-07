@@ -7,7 +7,7 @@ const { readAllTypeService } = require('../services/type.service');
 async function constrollorCreateService(req, res, next) {
   try {
     const check = await Type.findOne({ nom: req.body.nom });
-    if (check) return next(new AppHttpError('Ce nom déjà pris', 400));
+    if (check) return next(new AppHttpError('This name already taken', 400));
     const image = req.file ? `images/${req.file.filename}` : 'images/type.png';
     const data = { ...req.body, image };
     const response = new ServiceCreate(data, Type);

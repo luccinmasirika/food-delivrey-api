@@ -6,6 +6,8 @@ const {
   serviceDeviseCreate,
   serviceReadConfig,
 } = require('../services/config.service');
+const { ServiceCreate } = require('../services/create.service');
+const { ServiceUpdate } = require('../services/update.service');
 
 async function updateConfig(req, res, next) {
   try {
@@ -20,7 +22,8 @@ async function updateConfig(req, res, next) {
 
 async function createDevise(req, res, next) {
   try {
-    await serviceDeviseCreate(req.body);
+    const response = new ServiceCreate(req.body, Devise);
+    await response.create();
     return res.json({ message: 'Success operation' });
   } catch (error) {
     return next(
@@ -31,7 +34,8 @@ async function createDevise(req, res, next) {
 
 async function updateDevise(req, res, next) {
   try {
-    await serviceDeviseUpdate(req.body, req.devise._id);
+    const response = new ServiceUpdate(req, Ets);
+    await response.update();
     return res.json({ message: 'Success operation' });
   } catch (error) {
     return next(

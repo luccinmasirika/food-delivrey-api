@@ -1,5 +1,6 @@
 const { Config, Devise } = require('../models/Config.model');
 const AppHttpError = require('../_helpers/appHttpError');
+const slugify = require('slugify');
 
 // Get config by ID from params
 async function getConfigByID(req, res, next, id) {
@@ -30,24 +31,32 @@ async function getDeviseByID(req, res, next, id) {
 }
 
 async function checkName(req, res, next) {
-  try {
-    const data = await Devise.findOne({
-      nom: req.body.nom,
-    }).exec();
+  if (req.body.nom) {
+    try {
+      const slug = slugify(req.body.nom, { lower: true, strict: true });
+      const data = await Devise.findOne({
+        slug,
+      }).exec();
 
-    if (req.devise && req.devise.nom === req.body.nom) {
+      if (
+        req.query._id &&
+        data &&
+        data._id.toString() === req.query._id.toString()
+      ) {
+        return next();
+      }
+
+      if (data) {
+        return next(new AppHttpError('This name already taken', 400));
+      }
       return next();
+    } catch (error) {
+      return next(
+        new AppHttpError('An error has occurred.' + ' ' + error.message, 500)
+      );
     }
-
-    if (data && data.nom) {
-      return next(new AppHttpError('Ce nom déjà pris', 400));
-    }
-    return next();
-  } catch (error) {
-    return next(
-      new AppHttpError('An error has occurred.' + ' ' + error.message, 500)
-    );
   }
+  next();
 }
 
 module.exports = { checkName, getDeviseByID, getConfigByID };

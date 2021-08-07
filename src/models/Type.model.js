@@ -8,6 +8,7 @@ const typeSchema = Schema(
     image: String,
     disable: { type: Boolean, default: false },
     ets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ets' }],
+    slug: { type: String, unique: true },
   },
   { timestamps: true }
 );

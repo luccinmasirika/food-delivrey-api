@@ -24,15 +24,10 @@ const { multer } = require('../_middlewares/multer.middleware');
 router.post('/update/logo/:userId', multer, updateLogo);
 router.post('/update/icon/:userId', multer, updateIcon);
 router.post('/create/devise/:userId', deviseValidator, checkName, createDevise);
-router.put(
-  '/update/devise/:deviseId/:userId',
-  deviseValidator,
-  checkName,
-  updateDevise
-);
+router.put('/update/devise/:userId', deviseValidator, checkName, updateDevise);
 router.put('/update/config/:userId', configValidator, updateConfig);
 router.get('/read/all/devise/:userId', readAllDevise);
-router.get('/read/config/:userId', readConfig);
+router.get('/read/config', readConfig);
 
 router.param('userId', getUserByID);
 router.param('configId', getConfigByID);

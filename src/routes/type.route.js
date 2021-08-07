@@ -18,8 +18,8 @@ router.post(
   '/create/type/:userId',
   requireSignin,
   isAuth,
-  checkName,
   multer,
+  checkName,
   typeValidator,
   constrollorCreateService
 );
@@ -28,6 +28,7 @@ router.put(
   requireSignin,
   isAuth,
   multer,
+  checkName,
   typeEditValidator,
   updateType
 );

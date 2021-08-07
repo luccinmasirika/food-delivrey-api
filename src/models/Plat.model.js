@@ -17,6 +17,7 @@ const platSchema = Schema(
       nom: { type: String, required: true },
     },
     menu: { type: mongoose.Schema.Types.ObjectId, ref: 'Menu' },
+    slug: { type: String },
   },
   { timestamps: true }
 );

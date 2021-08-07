@@ -9,6 +9,7 @@ const {
   disableAnable,
 } = require('../services/plat.service');
 const { PushData } = require('../_helpers/pushData');
+const { ServiceUpdate } = require('../services/update.service');
 
 async function constrollorCreateService(req, res, next) {
   try {
@@ -32,15 +33,41 @@ async function constrollorCreateService(req, res, next) {
   }
 }
 
+async function updatePlat(req, res, next) {
+  const plat = await Plat.findOne({ _id: req.query._id }, { menu: 1, ets: 1 });
+  try {
+    if (req.body.ets) {
+      await new PushData(Ets, { plat: plat._id }, { _id: plat.ets }).onPull();
+      await new PushData(
+        Ets,
+        { plat: plat._id },
+        { _id: req.body.ets }
+      ).onPush();
+    }
+
+    if (req.body.menu) {
+      await new PushData(Menu, { plat: plat._id }, { _id: plat.menu }).onPull();
+      await new PushData(
+        Menu,
+        { plat: plat._id },
+        { _id: req.body.menu }
+      ).onPush();
+    }
+
+    const response = new ServiceUpdate(req, Plat);
+    await response.update();
+    return res.json({ message: 'Success operation' });
+  } catch (error) {
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
+  }
+}
+
 async function addOtherImages(req, res, next) {
   try {
     const image = req.file && `images/${req.file.filename}`;
     const { _id } = req.query;
 
-    const test = await Plat.updateOne(
-      { _id },
-      { $push: { autresImages: image } }
-    );
+    await Plat.updateOne({ _id }, { $push: { autresImages: image } });
     return res.json({ message: 'Success operation' });
   } catch (error) {
     next(new AppHttpError('An error has occurred', 500));
@@ -74,10 +101,22 @@ async function readAllPlat(req, res, next) {
   }
 }
 
+async function readRandomPlat(req, res, next) {
+  const size = parseInt(req.query.count);
+  try {
+    const data = await Plat.aggregate([{ $sample: { size } }]);
+    res.json({ data });
+  } catch (error) {
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
+  }
+}
+
 module.exports = {
   constrollorCreateService,
   readAllPlat,
   addOtherImages,
   promoControllor,
   disableUnableControllor,
+  updatePlat,
+  readRandomPlat,
 };

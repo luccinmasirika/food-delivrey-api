@@ -1,5 +1,6 @@
 const Plat = require('../models/Plat.model');
 const AppHttpError = require('../_helpers/appHttpError');
+const slugify = require('slugify');
 
 // Get type by ID from params
 async function getPlatByID(req, res, next, id) {
@@ -16,20 +17,34 @@ async function getPlatByID(req, res, next, id) {
 }
 
 async function checkName(req, res, next) {
-  try {
-    const data = await Plat.findOne({
-      nom: req.body.nom,
-      menu: req.body.menu,
-    }).exec();
-    if (data && data.nom) {
-      return next(new AppHttpError('Ce nom déjà pris', 400));
+  if (req.body.nom) {
+    try {
+      const slug = slugify(req.body.nom, { lower: true, strict: true });
+      const check = await Plat.findOne({ _id: req.query._id }, { ets: 1 });
+      const data = await Plat.findOne({
+        slug,
+        'ets._id': req.body.ets || check.ets,
+      }).exec();
+
+      if (
+        req.query._id &&
+        data &&
+        data._id.toString() === req.query._id.toString()
+      ) {
+        return next();
+      }
+
+      if (data) {
+        return next(new AppHttpError('This name already taken', 400));
+      }
+      return next();
+    } catch (error) {
+      return next(
+        new AppHttpError('An error has occurred.' + ' ' + error.message, 500)
+      );
     }
-    return next();
-  } catch (error) {
-    return next(
-      new AppHttpError('An error has occurred.' + ' ' + error.message, 500)
-    );
   }
+  next();
 }
 
 module.exports = { checkName, getPlatByID };

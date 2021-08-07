@@ -18,6 +18,7 @@ const deviseSchema = Schema(
   {
     taux: { type: Number, trim: true, required: true },
     nom: { type: String, trim: true, required: true },
+    slug: { type: String, unique: true },
   },
   { timestamps: true }
 );

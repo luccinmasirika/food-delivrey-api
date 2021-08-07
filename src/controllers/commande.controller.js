@@ -1,38 +1,29 @@
 const Commande = require('../models/Commande.model');
 const Plat = require('../models/Plat.model');
 const AppHttpError = require('../_helpers/appHttpError');
-const { readAllCommandeService } = require('../services/commande.service');
-const Config = require('../models/Config.model');
+const {
+  createCommandeService,
+  readAllCommandeService,
+} = require('../services/commande.service');
+const { statsClient, statsLivreur } = require('../_helpers/statUsers');
 const ListRouge = require('../models/ListeRouge.model');
 
 async function constrollorCreateService(req, res, next) {
-  const FRAIS_DE_LIVRAISON = 2;
-  const { produit, ville, adresse1, adresse2, long, lat, client } = req.body;
+  const { distance, produit, ville, adresse1, adresse2, long, lat } = req.body;
   try {
-    try {
-      for (let i = 0; i < req.body.produit.length; i++) {
-        const data = await Plat.findOne(
-          {
-            _id: produit[i].id,
-          },
-          { ets: 1, prix: 1 }
-        ).exec();
-        const commande = new Commande({
-          client,
-          quantity: produit[i].quantity,
-          produit: produit[i].id,
-          ets: data.ets,
-          prix: data.prix * produit[i].quantity + FRAIS_DE_LIVRAISON,
-          adresse: { ville, adresse1, adresse2, localisation: { long, lat } },
-        });
-        await commande.save();
-      }
-      res.json({ message: 'Success operation' });
-    } catch (error) {
-      next(new AppHttpError('Une error est survenue' + error, 500));
-    }
+    await createCommandeService(
+      distance,
+      produit,
+      req.user._id,
+      ville,
+      adresse1,
+      adresse2,
+      long,
+      lat
+    );
+    return res.json({ message: 'Success' });
   } catch (error) {
-    next(new AppHttpError('Une error est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message));
   }
 }
 
@@ -47,6 +38,9 @@ async function validerCommande(req, res, next) {
       { _id: req.commande._id },
       { $set: { etat: req.body.etat } }
     );
+    if (req.body.etat === 'DENIED') {
+      await statsClient('DENIED', req.commande.client);
+    }
     return res.json({ message: 'Success operation' });
   } catch (error) {
     return next(
@@ -84,6 +78,7 @@ async function livrerCommande(req, res, next) {
       { _id: req.commande._id, etat: 'VALIDATED' },
       { $set: { etat: 'PENDING_FOR_PAYMENT', livreur: req.user._id } }
     );
+    await statsLivreur('PENDING', req.user._id);
     return res.json({ message: 'Success operation' });
   } catch (error) {
     return next(
@@ -131,6 +126,9 @@ async function payerCommande(req, res, next) {
           commande: check._id,
         });
         await addToList.save();
+        await statsLivreur('CLOSED', check.livreur);
+        await statsLivreur('UNPENDING', check.livreur);
+        await statsClient('DENIED', req.user._id);
         return res.json({ message: 'Success operation' });
       } catch (error) {
         return next(
@@ -143,6 +141,9 @@ async function payerCommande(req, res, next) {
       { _id: req.commande._id },
       { $set: { etat: req.body.etat } }
     );
+    await statsClient('PAYIED', req.user._id);
+    await statsLivreur('PAYIED', check.livreur);
+    await statsLivreur('UNPENDING', check.livreur);
     return res.json({ message: 'Success operation' });
   } catch (error) {
     return next(
@@ -160,10 +161,23 @@ async function readAllCommande(req, res, next) {
   }
 }
 
+async function closeCommande(req, res, next) {
+  const check = await Commande.findOne({ _id: req.commande._id }, { etat: 1 });
+  if (check.etat !== 'PAYIED') {
+    return next(new AppHttpError('Action denied', 400));
+  }
+  await Commande.updateOne(
+    { _id: req.commande._id },
+    { $set: { etat: 'CLOSED' } }
+  );
+  return res.json({ message: 'Succcess operation' });
+}
+
 module.exports = {
   constrollorCreateService,
   readAllCommande,
   validerCommande,
   livrerCommande,
   payerCommande,
+  closeCommande,
 };

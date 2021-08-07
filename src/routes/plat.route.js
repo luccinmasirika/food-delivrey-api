@@ -9,13 +9,18 @@ const {
   addOtherImages,
   promoControllor,
   disableUnableControllor,
+  updatePlat,
+  readRandomPlat,
 } = require('../controllers/plat.contoller');
-const { platValidator } = require('../validation/plat.validation');
+const {
+  platValidator,
+  platEditValidator,
+} = require('../validation/plat.validation');
 
 router.post(
   '/create/plat/:userId',
-  checkName,
   multer,
+  checkName,
   platValidator,
   constrollorCreateService
 );
@@ -27,12 +32,17 @@ router.post(
 // );
 
 router.get('/read/all/plat/:userId', readAllPlat);
-
 router.get('/promo/plat/:userId', promoControllor);
-
 router.get('/disableUnable/plat/:userId', disableUnableControllor);
-
 router.post('/add/images/plat/:userId', multer, addOtherImages);
+router.put(
+  '/update/plat/:userId',
+  multer,
+  checkName,
+  platEditValidator,
+  updatePlat
+);
+router.get('/random/plat', readRandomPlat);
 
 router.param('userId', getUserByID);
 

@@ -5,12 +5,12 @@ const {
   validerCommande,
   livrerCommande,
   payerCommande,
+  closeCommande,
 } = require('../controllers/commande.controller');
 const {
   createCommandeValidator,
   accepterCommandeValidator,
   payerCommandeValidator,
-  closeCommandeValidator,
 } = require('../validation/commande.validation');
 const { getUserByID } = require('../_middlewares/user.middleware');
 const { getCommandeByID } = require('../_middlewares/commande.middleware');
@@ -22,7 +22,7 @@ router.post(
 );
 router.get('/read/all/commande/:userId', readAllCommande);
 router.put(
-  '/ets/valider/commande/:commandeId/:userId',
+  '/valider/commande/:commandeId/:userId',
   accepterCommandeValidator,
   validerCommande
 );
@@ -32,7 +32,7 @@ router.put(
   payerCommandeValidator,
   payerCommande
 );
-router.put('/close/commande', closeCommandeValidator);
+router.put('/close/commande/:commandeId/:userId', closeCommande);
 
 router.param('userId', getUserByID);
 router.param('commandeId', getCommandeByID);
