@@ -16,7 +16,6 @@ const etsSchema = Schema(
     },
     disable: { type: Boolean, default: false },
     type: { type: mongoose.Schema.Types.ObjectId, ref: 'Type' },
-    menu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Menu' }],
     slug: { type: String, unique: true },
   },
   { timestamps: true }

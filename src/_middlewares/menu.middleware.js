@@ -20,10 +20,8 @@ async function checkName(req, res, next) {
   if (req.body.nom) {
     try {
       const slug = slugify(req.body.nom, { lower: true, strict: true });
-      const check = await Menu.findOne({ _id: req.query._id }, { ets: 1 });
       const data = await Menu.findOne({
         slug,
-        ets: req.body.ets || check.ets,
       }).exec();
 
       if (

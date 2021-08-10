@@ -78,9 +78,6 @@ exports.readAllUser = async (req, res, next) => {
   try {
     const query = { ...req.query, ets: req.user.ets };
     const users = await readAllUser(query);
-    if (!users.total) {
-      next(new AppHttpError('Il y a aucun utilisateur', 404));
-    }
     res.json(users);
   } catch (error) {
     next(new AppHttpError('An error has occurred.' + ' ' + error.message));

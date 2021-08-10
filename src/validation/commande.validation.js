@@ -5,7 +5,6 @@ const validateRequest = require('./validatorsRequest');
 const createCommandeValidator = (req, res, next) => {
   const schema = Joi.object().keys({
     produit: Joi.array().label('Product is required').min(1).required(),
-    client: Joi.string().label('Client is required').min(24).max(24).required(),
     ville: Joi.string().label('Town is required').min(1).max(32).required(),
     adresse1: Joi.string()
       .label('Adress is required')

@@ -16,8 +16,6 @@ const {
 
 router.post(
   '/create/type/:userId',
-  requireSignin,
-  isAuth,
   multer,
   checkName,
   typeValidator,

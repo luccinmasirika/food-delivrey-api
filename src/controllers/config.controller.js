@@ -1,4 +1,5 @@
 const AppHttpError = require('../_helpers/appHttpError');
+const { Devise } = require('../models/Config.model');
 const {
   readAllDeviseService,
   serviceConfigUpdate,

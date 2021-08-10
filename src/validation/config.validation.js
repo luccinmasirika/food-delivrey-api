@@ -9,6 +9,7 @@ const configValidator = (req, res, next) => {
       .min(1)
       .max(32)
       .empty(''),
+    devise: Joi.string().label('Invalid currency').min(1).max(32).empty(''),
     fraisParKm: Joi.number()
       .label('Invalid fee delivrery per Km')
       .min(1)

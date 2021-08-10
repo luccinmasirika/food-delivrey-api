@@ -8,52 +8,28 @@ const {
   promo,
   disableAnable,
 } = require('../services/plat.service');
-const { PushData } = require('../_helpers/pushData');
 const { ServiceUpdate } = require('../services/update.service');
 
 async function constrollorCreateService(req, res, next) {
   try {
     const image = req.file ? `images/${req.file.filename}` : 'images/plat.png';
-    const checkEts = await Ets.findById(req.body.ets);
-    const ets = {
-      _id: checkEts._id,
-      nom: checkEts.nom,
-    };
+    const ets = await Ets.findById(req.body.ets);
+
     const data = { ...req.body, ets, image };
     const response = new ServiceCreate(data, Plat);
-    const pushData = await response.create();
-    await new PushData(
-      Menu,
-      { plat: pushData._id },
-      { _id: req.body.menu }
-    ).onPush();
-    res.json({ message: 'Success operation', _id: pushData._id });
+    const plat = await response.create();
+    res.json({ message: 'Success operation', _id: plat._id });
   } catch (error) {
-    next(new AppHttpError('Une error est survenue' + error, 500));
+    next(new AppHttpError('An error has occurred' + error, 500));
   }
 }
 
 async function updatePlat(req, res, next) {
-  const plat = await Plat.findOne({ _id: req.query._id }, { menu: 1, ets: 1 });
   try {
+    const ets = await Ets.findById(req.body.ets);
     if (req.body.ets) {
-      await new PushData(Ets, { plat: plat._id }, { _id: plat.ets }).onPull();
-      await new PushData(
-        Ets,
-        { plat: plat._id },
-        { _id: req.body.ets }
-      ).onPush();
+      req.body.ets = ets;
     }
-
-    if (req.body.menu) {
-      await new PushData(Menu, { plat: plat._id }, { _id: plat.menu }).onPull();
-      await new PushData(
-        Menu,
-        { plat: plat._id },
-        { _id: req.body.menu }
-      ).onPush();
-    }
-
     const response = new ServiceUpdate(req, Plat);
     await response.update();
     return res.json({ message: 'Success operation' });
