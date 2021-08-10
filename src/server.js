@@ -8,8 +8,8 @@ const cors = require('cors');
 const compression = require('compression');
 const { config } = require('./config/config');
 const hpp = require('hpp');
-const rateLimit = require("express-rate-limit");
-const helmet = require('helmet')
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 
 const AppHttpError = require('../src/_helpers/appHttpError');
 
@@ -21,7 +21,7 @@ dotenv.config();
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs
 });
 
 // App middlewares
@@ -39,7 +39,18 @@ app.use(cookieParser());
 app.use(compression());
 app.use(hpp());
 app.use(limiter); //  apply rate limit to all requests
-app.use(helmet())
+app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+    },
+    reportOnly: true,
+    setAllHeaders: true,
+    disableAndroid: true,
+    browserSniff: true,
+  })
+);
 
 // Statics files
 app.use(
