@@ -40,17 +40,6 @@ app.use(compression());
 app.use(hpp());
 app.use(limiter); //  apply rate limit to all requests
 app.use(helmet());
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-    },
-    reportOnly: true,
-    setAllHeaders: true,
-    disableAndroid: true,
-    browserSniff: true,
-  })
-);
 
 // Statics files
 app.use(
@@ -60,7 +49,7 @@ app.use(
 
 // Home page
 app.get('/', (req, res) => {
-  return res.send('<h1>Bienfafood API - v1 (07-07-2021 )</h1>');
+  return res.send('<h1>Bienfafood API - v1 (11-07-2021 )</h1>');
 });
 
 // Database connexion
