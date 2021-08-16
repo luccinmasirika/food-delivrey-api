@@ -184,7 +184,6 @@ async function closeCommande(req, res, next) {
 async function commandeDataChart(req, res, next) {
   try {
     const query = req.user.role === 1 ? req.user.ets : req.query.ets;
-    console.log(query);
     const data = await getChartData(query);
     return res.json(data);
   } catch (error) {
