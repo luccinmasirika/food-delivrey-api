@@ -4,6 +4,7 @@ const AppHttpError = require('../_helpers/appHttpError');
 const {
   createCommandeService,
   readAllCommandeService,
+  getChartData,
 } = require('../services/commande.service');
 const { statsClient, statsLivreur } = require('../_helpers/statUsers');
 const ListRouge = require('../models/ListeRouge.model');
@@ -162,15 +163,33 @@ async function readAllCommande(req, res, next) {
 }
 
 async function closeCommande(req, res, next) {
-  const check = await Commande.findOne({ _id: req.commande._id }, { etat: 1 });
-  if (check.etat !== 'PAYIED') {
-    return next(new AppHttpError('Action denied', 400));
+  try {
+    const check = await Commande.findOne(
+      { _id: req.commande._id },
+      { etat: 1 }
+    );
+    if (check.etat !== 'PAYIED') {
+      return next(new AppHttpError('Action denied', 400));
+    }
+    await Commande.updateOne(
+      { _id: req.commande._id },
+      { $set: { etat: 'CLOSED' } }
+    );
+    return res.json({ message: 'Succcess operation' });
+  } catch (error) {
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
   }
-  await Commande.updateOne(
-    { _id: req.commande._id },
-    { $set: { etat: 'CLOSED' } }
-  );
-  return res.json({ message: 'Succcess operation' });
+}
+
+async function commandeDataChart(req, res, next) {
+  try {
+    const query = req.user.role === 1 ? req.user.ets : req.query.ets;
+    console.log(query);
+    const data = await getChartData(query);
+    return res.json(data);
+  } catch (error) {
+    next(new AppHttpError('An error has occurred.' + ' ' + error.message, 500));
+  }
 }
 
 module.exports = {
@@ -180,4 +199,5 @@ module.exports = {
   livrerCommande,
   payerCommande,
   closeCommande,
+  commandeDataChart,
 };

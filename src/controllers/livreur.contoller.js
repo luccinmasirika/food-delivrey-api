@@ -7,10 +7,18 @@ const {
 } = require('../services/user.service');
 const AppHttpError = require('../_helpers/appHttpError');
 
-exports.signup = async (req, res) => {
+exports.signupLivreur = async (req, res) => {
   const defaultAvatar = 'images/avatar.png';
   const avatar = req.file ? `images/${req.file.filename}` : defaultAvatar;
-  const livreur = { ...req.body, avatar };
+  const livreur = {
+    ...req.body,
+    avatar,
+    stat: {
+      un: 0,
+      deux: 0,
+      trois: 0,
+    },
+  };
 
   try {
     await createAccout(livreur);

@@ -21,7 +21,7 @@ dotenv.config();
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 1000000000000, // limit each IP to 100 requests per windowMs
 });
 
 // App middlewares
@@ -65,6 +65,7 @@ app.use('/api', require('./routes/plat.route'));
 app.use('/api', require('./routes/client.route'));
 app.use('/api', require('./routes/config.route'));
 app.use('/api', require('./routes/commande.route'));
+app.use('/api', require('./routes/stats.route'));
 
 // error handler
 app.use((req, res, next) => {

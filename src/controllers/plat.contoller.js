@@ -50,6 +50,19 @@ async function addOtherImages(req, res, next) {
   }
 }
 
+async function removeOtherImages(req, res, next) {
+  try {
+    const test = await Plat.updateOne(
+      { _id: req.query._id },
+      { $pull: { autresImages: { $in: req.body } } },
+      { multi: true }
+    ).exec();
+    return res.json({ message: 'success' });
+  } catch (error) {
+    next(new AppHttpError('An error has occurred' + error, 500));
+  }
+}
+
 async function promoControllor(req, res, next) {
   try {
     await promo(req.query._id);
@@ -95,4 +108,5 @@ module.exports = {
   disableUnableControllor,
   updatePlat,
   readRandomPlat,
+  removeOtherImages,
 };

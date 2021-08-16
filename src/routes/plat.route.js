@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { getUserByID } = require('../_middlewares/user.middleware');
 const { getPlatByID, checkName } = require('../_middlewares/plat.middleware');
-const { multer, multerArray } = require('../_middlewares/multer.middleware');
+const { multer } = require('../_middlewares/multer.middleware');
 const {
   constrollorCreateService,
   readAllPlat,
@@ -11,6 +11,7 @@ const {
   disableUnableControllor,
   updatePlat,
   readRandomPlat,
+  removeOtherImages,
 } = require('../controllers/plat.contoller');
 const {
   platValidator,
@@ -25,12 +26,6 @@ router.post(
   constrollorCreateService
 );
 
-// router.post(
-//   '/create/images/plat/:userId',
-//   multerArray,
-//   constrollorCreateService
-// );
-
 router.get('/read/all/plat/:userId', readAllPlat);
 router.get('/promo/plat/:userId', promoControllor);
 router.get('/disableUnable/plat/:userId', disableUnableControllor);
@@ -43,6 +38,7 @@ router.put(
   updatePlat
 );
 router.get('/random/plat', readRandomPlat);
+router.put('/pull/plat/images/:userId', removeOtherImages);
 
 router.param('userId', getUserByID);
 

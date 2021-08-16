@@ -84,4 +84,107 @@ async function readAllCommandeService(params) {
   ).pagination();
 }
 
-module.exports = { readAllCommandeService, createCommandeService };
+async function getChartData(params) {
+  const filters = params ? params : { $nin: [] };
+  const data = await Commande.aggregate([
+    {
+      $match: {
+        ets: filters,
+      },
+    },
+    {
+      $addFields: {
+        createdAt: {
+          $cond: {
+            if: {
+              $eq: [
+                {
+                  $type: '$createdAt',
+                },
+                'date',
+              ],
+            },
+            then: '$createdAt',
+            else: null,
+          },
+        },
+      },
+    },
+    {
+      $addFields: {
+        __alias_0: {
+          month: {
+            $subtract: [
+              {
+                $month: '$createdAt',
+              },
+              1,
+            ],
+          },
+        },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          __alias_0: '$__alias_0',
+          __alias_1: '$etat',
+        },
+        __alias_2: {
+          $sum: '$quantity',
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        __alias_0: '$_id.__alias_0',
+        __alias_1: '$_id.__alias_1',
+        __alias_2: 1,
+      },
+    },
+    {
+      $project: {
+        x: '$__alias_0',
+        y: '$__alias_2',
+        color: '$__alias_1',
+        _id: 0,
+      },
+    },
+    {
+      $group: {
+        _id: {
+          x: '$x',
+        },
+        __grouped_docs: {
+          $push: '$$ROOT',
+        },
+      },
+    },
+    {
+      $sort: {
+        '_id.x.month': 1,
+      },
+    },
+    {
+      $unwind: '$__grouped_docs',
+    },
+    {
+      $replaceRoot: {
+        newRoot: '$__grouped_docs',
+      },
+    },
+    {
+      $limit: 5000,
+    },
+  ]);
+
+  return data;
+}
+
+
+module.exports = {
+  readAllCommandeService,
+  createCommandeService,
+  getChartData,
+};

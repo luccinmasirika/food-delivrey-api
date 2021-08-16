@@ -58,7 +58,11 @@ const signupUserValidator = (req, res, next) => {
       .min(6)
       .max(32)
       .required(),
-    role: Joi.number().min(1).max(1).label('Le rôle est oblogatoire').required(),
+    role: Joi.number()
+      .min(1)
+      .max(1)
+      .label('Le rôle est oblogatoire')
+      .required(),
   });
   validateRequest(req, res, next, schema);
 };
@@ -148,11 +152,6 @@ const signupLivreurValidator = (req, res, next) => {
       .min(1)
       .max(32)
       .required(),
-    telephone: Joi.string()
-      .label('Le Numero est obligatoire')
-      .min(1)
-      .max(13)
-      .required(),
     email: Joi.string()
       .label('Veuillez ajouter une adresse email correcte')
       .min(3)
@@ -164,23 +163,7 @@ const signupLivreurValidator = (req, res, next) => {
       .min(6)
       .max(32)
       .required(),
-    role: Joi.number()
-      .label('Le rôle est oblogatoire')
-      .min(2)
-      .max(3)
-      .required(),
-    idPiece: Joi.string()
-      .label("L'ID est obligatoire")
-      .min(1)
-      .max(13)
-      .required(),
-    photoCarte: Joi.string()
-      .label('La photo est obligatoire')
-      .min(6)
-      .max(32)
-      .required(),
-    sexe: Joi.string().label('Sexe').min(1).max(13),
-    adresse: Joi.string().label('Adresse').min(1).max(13),
+    role: Joi.number(),
   });
   validateRequest(req, res, next, schema);
 };
@@ -209,5 +192,5 @@ module.exports = {
   signupLivreurValidator,
   updateLivreurValidator,
   updateClientValidator,
-  signupUserValidator
+  signupUserValidator,
 };
