@@ -13,15 +13,13 @@ const helmet = require('helmet');
 
 const AppHttpError = require('../src/_helpers/appHttpError');
 
-// TODO: import routes middlewares
-
 // Start application
 const app = express();
 dotenv.config();
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 3000, // limit each IP to 100 requests per windowMs
 });
 
 // App middlewares
@@ -49,7 +47,7 @@ app.use(
 
 // Home page
 app.get('/', (req, res) => {
-  return res.send('<h1>Bienfafood API - v1 (16-08-2021-18:16 )</h1>');
+  return res.send('<h1>Bienfafood API - v1 (19-08-2021-18:16 )</h1>');
 });
 
 // Database connexion
